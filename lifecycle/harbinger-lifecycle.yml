@@ -1,0 +1,56 @@
+generated: '2026-08-22'
+method: probed
+source: https://harbingermotors.com/ site walk + live response headers on 2026-08-22
+description: >-
+  The operational-transparency posture of the harbingermotors.com content API. Harbinger Motors
+  publishes no versioning policy, no deprecation policy, no SLA, no API status page and no API
+  changelog, because it publishes no developer program. Every negative below was checked, not
+  assumed.
+versioning:
+  scheme: uri-path namespace
+  current: wp/v2
+  docs: null
+  detail: >-
+    The version is inherited from WordPress core, not chosen by Harbinger. It moves when the site
+    is upgraded, with no announcement. 14 namespaces registered at capture; a plugin removal
+    silently removes a namespace and everything under it — the yoast/v1 and oembed/1.0 surfaces
+    documented in this repo exist only for as long as those plugins stay installed.
+deprecation:
+  policy_url: null
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  notice_period: none
+  detail: No Sunset or Deprecation response header was observed on any route, and no policy page exists on the site.
+sla:
+  url: null
+  published: false
+  uptime_target: null
+status_page: null
+status_page_published: false
+status_page_probes:
+- {url: 'https://status.harbingermotors.com', dns: NXDOMAIN}
+- {url: 'https://harbingermotors.com/status/', http_status: 404}
+change_log:
+  published: false
+  detail: >-
+    There is no API changelog. https://harbingermotors.com/newsroom/ is a corporate press
+    newsroom — funding rounds, product launches, partnerships — and says nothing about the
+    interface. It is wired as `Blog`/`BlogRSS` in apis.yml, which is what it is, and no ChangeLog
+    pointer is emitted.
+  newsroom_url: https://harbingermotors.com/newsroom/
+  newsroom_http_status: 200
+deprecated_operations: []
+support:
+  channel: https://harbingermotors.com/contact/
+  api_specific: false
+  detail: A general sales and enquiry form. There is no developer support channel, no forum, no Slack, no Discord and no issue tracker.
+observed_stability:
+  detail: >-
+    The site was last modified 2026-08-06 (page sitemap) and the newest post is dated 2026-07-31.
+    The surface is live and maintained as a marketing site; that is a statement about the website,
+    not a commitment about the API.
+evidence:
+- {url: 'https://harbingermotors.com/wp-json/wp/v2/posts?per_page=2', http_status: 200, sunset_header: absent, deprecation_header: absent}
+- {url: https://harbingermotors.com/sitemap.xml, http_status: 200}
+- {url: https://harbingermotors.com/newsroom/, http_status: 200}

@@ -1,0 +1,155 @@
+generated: '2026-08-22'
+method: probed
+source: live responses from https://harbingermotors.com/wp-json/ + openapi/ parameters derived from the published route index
+description: >-
+  Cross-cutting request and response semantics for the WordPress REST content API behind
+  harbingermotors.com. Harbinger Motors publishes no API documentation, so every convention below
+  was read off live responses and the server's own OPTIONS schema documents on 2026-08-22, or is
+  the documented WordPress core behaviour this surface inherits.
+authentication:
+  style: none for reads
+  detail: >-
+    Anonymous read. No key, token, account or signup. Writes require a WordPress application
+    password (HTTP Basic over TLS) that has no public issuance path.
+  artifact: authentication/harbinger-authentication.yml
+idempotency:
+  supported: false
+  applicable: false
+  idempotency_key_header: null
+  detail: >-
+    There is no idempotency contract, because there is no public write surface to make idempotent.
+    No Idempotency-Key header, parameter or replay window is accepted or documented anywhere here.
+    Every public operation is a GET and is therefore idempotent by HTTP method semantics alone,
+    which is not the same thing as an idempotency guarantee for retried writes.
+pagination:
+  style: page-number with offset alternative
+  params:
+    page: 1-based page number. Default 1.
+    per_page: Records per page. Default 10, minimum 1, maximum 100 — exceeding it returns 400 rest_invalid_param.
+    offset: Alternative to page; skip N records.
+    order: asc or desc.
+    orderby: Sort field, an enum declared per route (date, id, include, relevance, slug, title, ...).
+  response_headers:
+    X-WP-Total: Total records matching the query.
+    X-WP-TotalPages: Total pages available at the current per_page.
+    Link: RFC 8288 rel="next" / rel="prev" links.
+  detail: >-
+    Verified live: GET /wp/v2/posts?per_page=2 returned X-WP-Total 34, X-WP-TotalPages 17 and a
+    Link header carrying rel="next". Both counter headers are listed in
+    Access-Control-Expose-Headers, so they are readable from a browser.
+  cursor: false
+field_selection:
+  supported: true
+  params:
+    _fields: Comma-separated allowlist of top-level response fields — a real sparse-fieldset control.
+    _embed: Inline embeddable linked resources (author, featured media, terms) under _embedded.
+    _links: HAL-style link relations are present on every record by default.
+  detail: >-
+    _fields is the difference between a multi-kilobyte rendered post record and a few hundred
+    bytes. _embed is the only way to resolve a post's author on this host, because /wp/v2/users is
+    capability-gated and returns 401 anonymously.
+filtering:
+  detail: >-
+    Per-resource query parameters are declared in the OPTIONS document for each route and carried
+    verbatim into the derived OpenAPI. Common across post types: search, slug, include, exclude,
+    after, before, modified_after, modified_before, status, order, orderby.
+  taxonomy_filters:
+  - 'GET /wp/v2/posts?categories=1   # Press Release (25 posts)'
+  - 'GET /wp/v2/posts?categories=2   # News (7 posts)'
+  - 'GET /wp/v2/posts?categories=18  # Blogs (2 posts)'
+  - 'GET /wp/v2/posts?tags=<id>      # registered but empty — 0 terms at capture'
+context_parameter:
+  param: context
+  values: [view, embed, edit]
+  default: view
+  detail: >-
+    `view` is the full public record, `embed` a trimmed subset for embedding. `edit` requires
+    authentication and returns 401 rest_forbidden_context anonymously. Field visibility per context
+    is declared in each property of the published schemas.
+request_tracing:
+  request_id_header: null
+  detail: >-
+    No correlation or request-id header is returned. There is nothing to quote in a support ticket,
+    and no API support channel to quote it to — harbingermotors.com/contact/ is a sales and general
+    enquiry form.
+versioning:
+  scheme: uri-path namespace
+  current: wp/v2
+  detail: >-
+    The version is a namespace segment in the path. 14 namespaces are registered at capture (wp/v2,
+    oembed/1.0, yoast/v1, cky/v1, redirection/v1, wordfence/v1, wordfence-login-security/v1,
+    ai1wm/v1, monsterinsights/v1, themeco, google-site-kit/v1, wp-site-health/v1,
+    wp-block-editor/v1, wp-abilities/v1). Harbinger publishes no versioning or deprecation policy
+    of its own; the namespace set moves when the site's WordPress core and plugins are upgraded,
+    with no announcement and no notice period.
+  artifact: lifecycle/harbinger-lifecycle.yml
+error_envelope:
+  format: wp-rest-error
+  rfc9457: false
+  shape: '{code, message, data: {status, params?, details?}}'
+  detail: Match on `code`, never on `message`. Full catalog of the 14 codes observed live in errors/harbinger-problem-types.yml.
+  artifact: errors/harbinger-problem-types.yml
+rate_limiting:
+  documented: false
+  response_headers: []
+  detail: >-
+    No RateLimit-*, X-RateLimit-* or Retry-After header appeared on any observed response, and no
+    limits are published. An agent has no runtime signal here and must self-throttle.
+  artifact: rate-limits/harbinger-rate-limits.yml
+caching:
+  observed_headers:
+    Vary: Origin,User-Agent
+  detail: >-
+    No Cache-Control, ETag or Last-Modified header was returned on the observed API responses, so
+    conditional requests are not available and a client cannot revalidate cheaply. The origin is
+    LiteSpeed and advertises HTTP/3 via Alt-Svc.
+  conditional_requests: false
+cors:
+  access_control_expose_headers: [X-WP-Total, X-WP-TotalPages, Link]
+  access_control_allow_headers: [Authorization, X-WP-Nonce, Content-Disposition, Content-MD5, Content-Type]
+  detail: No Access-Control-Allow-Origin was returned to a header-less request; Vary includes Origin, so the value is negotiated per request origin.
+indexing:
+  x_robots_tag: noindex
+  detail: >-
+    Every API response carries `X-Robots-Tag: noindex` alongside `X-Content-Type-Options: nosniff`.
+    The data is public and machine-readable but the provider signals it should not be indexed as
+    content.
+tracking:
+  detail: >-
+    API responses set a `_fbp` Meta pixel cookie with a 90-day Max-Age. A machine client should
+    discard cookies; a browser-based one is being tracked by an advertising cookie on what is
+    otherwise a plain content read.
+content_type:
+  request: application/json
+  response: application/json; charset=UTF-8
+reversibility:
+  applicable: false
+  grade: na
+  write_surface: none
+  detail: >-
+    There is nothing to reverse. Every publicly reachable operation on this surface is a GET;
+    anonymous writes are refused with 401 rest_cannot_create and there is no public path to obtain
+    write credentials. Reversibility, dry-run and idempotency are all `na` here for the same
+    reason, and that is an honest na rather than a gap — a read-only API cannot take an action an
+    agent would need to take back.
+  reversal_operations: []
+  windows: []
+  evidence:
+  - url: https://harbingermotors.com/wp-json/wp/v2/posts
+    method: OPTIONS
+    http_status: 200
+    observed: 'allow: GET'
+  - url: https://harbingermotors.com/wp-json/wp/v2/posts
+    method: POST
+    http_status: 401
+    observed: rest_cannot_create
+evidence:
+- url: 'https://harbingermotors.com/wp-json/wp/v2/posts?per_page=2'
+  http_status: 200
+  headers_observed: [x-wp-total, x-wp-totalpages, link, allow, x-robots-tag, x-content-type-options, access-control-expose-headers, vary, set-cookie]
+- url: 'https://harbingermotors.com/wp-json/wp/v2/posts?per_page=999'
+  http_status: 400
+- url: 'https://harbingermotors.com/wp-json/wp/v2/posts?context=edit'
+  http_status: 401
+- url: https://harbingermotors.com/wp-json/
+  http_status: 200

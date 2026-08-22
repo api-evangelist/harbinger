@@ -1,0 +1,186 @@
+generated: '2026-08-22'
+method: derived
+source: mcp/harbinger-mcp.yml (candidate tools) x openapi/ (22 operations)
+description: Binding between the CANDIDATE MCP tool list and the OpenAPI operations it was derived from. Harbinger
+  publishes neither an MCP server nor a GraphQL endpoint, so there is no published tool surface to reconcile against
+  REST — the crosswalk is complete and one-to-one by construction, and is recorded so that anyone building an
+  agent over this API inherits real input schemas from the spec instead of guessing them.
+surfaces:
+  openapi:
+    location: openapi/
+    specs: 9
+    operations: 22
+    published_by_provider: false
+    note: Derived from the server's own route index and OPTIONS schema documents; Harbinger publishes no OpenAPI.
+  graphql:
+    endpoint: null
+    present: false
+    note: No /graphql surface. Probed harbingermotors.com/graphql -> 404.
+  mcp:
+    url: null
+    present: false
+    gated: false
+    note: No MCP server exists. Tool list is a candidate.
+coverage:
+  tools_named: 22
+  tools_bound: 22
+  mcp_only: 0
+  rest_ops_total: 22
+  rest_ops_with_tool: 22
+crosswalk:
+- tool: get_api_index
+  category: Discovery
+  rest:
+  - getApiIndex
+  binding: rest
+  confidence: high
+  note: One-to-one. The tool inherits this operation's parameters as its real inputSchema.
+- tool: get_namespace_index
+  category: Discovery
+  rest:
+  - getNamespaceIndex
+  binding: rest
+  confidence: high
+  note: One-to-one. The tool inherits this operation's parameters as its real inputSchema.
+- tool: list_types
+  category: Discovery
+  rest:
+  - listTypes
+  binding: rest
+  confidence: high
+  note: One-to-one. The tool inherits this operation's parameters as its real inputSchema.
+- tool: get_type
+  category: Discovery
+  rest:
+  - getType
+  binding: rest
+  confidence: high
+  note: One-to-one. The tool inherits this operation's parameters as its real inputSchema.
+- tool: list_statuses
+  category: Discovery
+  rest:
+  - listStatuses
+  binding: rest
+  confidence: high
+  note: One-to-one. The tool inherits this operation's parameters as its real inputSchema.
+- tool: list_events
+  category: Events
+  rest:
+  - listEvents
+  binding: rest
+  confidence: high
+  note: One-to-one. The tool inherits this operation's parameters as its real inputSchema.
+- tool: get_event
+  category: Events
+  rest:
+  - getEvent
+  binding: rest
+  confidence: high
+  note: One-to-one. The tool inherits this operation's parameters as its real inputSchema.
+- tool: list_media
+  category: Media
+  rest:
+  - listMedia
+  binding: rest
+  confidence: high
+  note: One-to-one. The tool inherits this operation's parameters as its real inputSchema.
+- tool: get_media
+  category: Media
+  rest:
+  - getMedia
+  binding: rest
+  confidence: high
+  note: One-to-one. The tool inherits this operation's parameters as its real inputSchema.
+- tool: get_oembed
+  category: oEmbed
+  rest:
+  - getOembed
+  binding: rest
+  confidence: high
+  note: One-to-one. The tool inherits this operation's parameters as its real inputSchema.
+- tool: list_pages
+  category: Pages
+  rest:
+  - listPages
+  binding: rest
+  confidence: high
+  note: One-to-one. The tool inherits this operation's parameters as its real inputSchema.
+- tool: get_page
+  category: Pages
+  rest:
+  - getPage
+  binding: rest
+  confidence: high
+  note: One-to-one. The tool inherits this operation's parameters as its real inputSchema.
+- tool: list_posts
+  category: Posts
+  rest:
+  - listPosts
+  binding: rest
+  confidence: high
+  note: One-to-one. The tool inherits this operation's parameters as its real inputSchema.
+- tool: get_post
+  category: Posts
+  rest:
+  - getPost
+  binding: rest
+  confidence: high
+  note: One-to-one. The tool inherits this operation's parameters as its real inputSchema.
+- tool: search
+  category: Search
+  rest:
+  - search
+  binding: rest
+  confidence: high
+  note: One-to-one. The tool inherits this operation's parameters as its real inputSchema.
+- tool: get_seo_head
+  category: SEO
+  rest:
+  - getSeoHead
+  binding: rest
+  confidence: high
+  note: One-to-one. The tool inherits this operation's parameters as its real inputSchema.
+- tool: list_categories
+  category: Taxonomy
+  rest:
+  - listCategories
+  binding: rest
+  confidence: high
+  note: One-to-one. The tool inherits this operation's parameters as its real inputSchema.
+- tool: get_category
+  category: Taxonomy
+  rest:
+  - getCategory
+  binding: rest
+  confidence: high
+  note: One-to-one. The tool inherits this operation's parameters as its real inputSchema.
+- tool: list_tags
+  category: Taxonomy
+  rest:
+  - listTags
+  binding: rest
+  confidence: high
+  note: One-to-one. The tool inherits this operation's parameters as its real inputSchema.
+- tool: get_tag
+  category: Taxonomy
+  rest:
+  - getTag
+  binding: rest
+  confidence: high
+  note: One-to-one. The tool inherits this operation's parameters as its real inputSchema.
+- tool: list_taxonomies
+  category: Taxonomy
+  rest:
+  - listTaxonomies
+  binding: rest
+  confidence: high
+  note: One-to-one. The tool inherits this operation's parameters as its real inputSchema.
+- tool: get_taxonomy
+  category: Taxonomy
+  rest:
+  - getTaxonomy
+  binding: rest
+  confidence: high
+  note: One-to-one. The tool inherits this operation's parameters as its real inputSchema.
+mcp_only: []
+rest_only: []

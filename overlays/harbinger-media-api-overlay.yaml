@@ -1,0 +1,43 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Harbinger Motors Media API
+  version: 1.0.0
+  description: Records what API Evangelist added on top of the derived contract — provenance, cross-links to the
+    sibling artifacts in this repo, and a per-operation agentic-access classification. It never mutates the derived
+    spec, and it asserts nothing about Harbinger Motors beyond what was observed live on 2026-08-22.
+extends: openapi/harbinger-media-api-openapi.yml
+actions:
+- target: $.info
+  update:
+    x-apievangelist-profile: https://apis.io/provider/harbinger
+    x-apievangelist-method: derived
+    x-apievangelist-derived-on: '2026-08-22'
+    x-apievangelist-source: https://harbingermotors.com/wp-json/ route index + HTTP OPTIONS schema documents
+    x-provider-publishes-spec: false
+    x-access-model: public read-only, anonymous, no signup
+- target: $.info
+  update:
+    x-artifacts:
+      authentication: authentication/harbinger-authentication.yml
+      conventions: conventions/harbinger-conventions.yml
+      errors: errors/harbinger-problem-types.yml
+      lifecycle: lifecycle/harbinger-lifecycle.yml
+      rate_limits: rate-limits/harbinger-rate-limits.yml
+      data_model: data-model/harbinger-data-model.yml
+      conformance: conformance/harbinger-conformance.yml
+- target: $.paths['/wp/v2/media'].get
+  update:
+    x-agentic-access:
+      action_class: read
+      consequence: none
+      reversible: na
+      token: none
+      escalation: none
+- target: $.paths['/wp/v2/media/{id}'].get
+  update:
+    x-agentic-access:
+      action_class: read
+      consequence: none
+      reversible: na
+      token: none
+      escalation: none

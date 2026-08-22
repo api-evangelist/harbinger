@@ -64,5 +64,19 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Harbinger is a company surfaced via the API Evangelist harvest backlog (source: secondary-market) and added to the network as a stub for full-pipeline profiling.
+Harbinger (Harbinger Motors Inc.) is an American commercial-vehicle manufacturer founded in July 2021
+and headquartered in Garden Grove, California. It builds a purpose-designed medium-duty platform —
+Class 4-6 stripped chassis in all-electric and plug-in hybrid range-extended form, the HC Series
+low-cab-forward cab chassis, the Sevna cab chassis and a step van — plus the Harbinger Industria
+off-grid and jobsite power system.
+
+**Harbinger Motors publishes no API, no developer portal, no API documentation and no SDKs.** It is a
+vehicle manufacturer, not a software vendor. The one machine-readable interface it exposes publicly is
+the WordPress REST content API behind `harbingermotors.com`, which is anonymously readable, read-only,
+and documented in this repository for discovery purposes. Nine OpenAPI definitions in `openapi/` were
+derived from the site's own published route index and HTTP OPTIONS schema documents on 2026-08-22 —
+Harbinger publishes none of them.
+
+- https://harbingermotors.com/
+- https://harbingermotors.com/wp-json/
 - https://forgeglobal.com/harbinger_stock/

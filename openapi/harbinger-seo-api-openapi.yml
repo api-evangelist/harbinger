@@ -1,0 +1,96 @@
+openapi: 3.1.0
+info:
+  title: Harbinger Motors SEO Metadata API
+  version: wp/v2
+  description: The Yoast SEO `get_head` endpoint on harbingermotors.com. For any site URL it returns the fully rendered
+    <head> block — canonical URL, robots directives, Open Graph and Twitter card metadata, and the schema.org JSON-LD
+    graph the page publishes. Verified live on 2026-08-22 (Yoast SEO 28.3), anonymous and read-only. This is a plugin
+    surface, not a Harbinger product API.
+  contact:
+    name: Harbinger Motors
+    url: https://harbingermotors.com/contact/
+  x-derived-from: https://harbingermotors.com/wp-json/ route index + per-route HTTP OPTIONS schema documents
+  x-derived-on: '2026-08-22'
+  x-api-evangelist-note: Third-party profile. Harbinger Motors publishes no developer program, no API documentation
+    and no developer portal; this documents the anonymously readable WordPress REST content API behind harbingermotors.com.
+    Every path, parameter and schema here was read from the server's own published route index and HTTP OPTIONS
+    schema documents on 2026-08-22 — nothing is invented.
+servers:
+- url: https://harbingermotors.com/wp-json
+  description: Harbinger Motors WordPress REST API
+tags:
+- name: SEO
+  description: Rendered SEO metadata and schema.org JSON-LD.
+paths:
+  /yoast/v1/get_head:
+    get:
+      operationId: getSeoHead
+      summary: Get rendered SEO head for a URL
+      description: Return the rendered head metadata Yoast SEO emits for a harbingermotors.com URL.
+      tags:
+      - SEO
+      parameters:
+      - name: url
+        in: query
+        required: true
+        description: The harbingermotors.com URL to render head metadata for.
+        schema:
+          type: string
+          format: uri
+      responses:
+        '200':
+          description: The rendered head metadata.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SeoHead'
+        '400':
+          description: Invalid parameter. WordPress returns `rest_invalid_param` with a per-parameter `data.params`
+            map.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: No route matched (`rest_no_route`) or the requested record does not exist.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    SeoHead:
+      type: object
+      description: Yoast SEO head payload.
+      properties:
+        html:
+          type: string
+          description: The rendered <head> HTML block, including the schema.org JSON-LD graph.
+        json:
+          type: object
+          description: The same metadata as a structured object, when requested.
+    Error:
+      type: object
+      description: WordPress REST error envelope. Observed live on this host; it is not RFC 9457 problem+json.
+      properties:
+        code:
+          type: string
+          description: Stable machine-readable error code. Match on this, never on `message`.
+        message:
+          type: string
+          description: Human-readable message. Localized and subject to change.
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+              description: HTTP status code, repeated in the body.
+            params:
+              type: object
+              description: Per-parameter validation messages, present on rest_invalid_param.
+            details:
+              type: object
+              description: Per-parameter structured detail, present on rest_invalid_param.
+      required:
+      - code
+      - message

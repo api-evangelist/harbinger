@@ -1,0 +1,698 @@
+openapi: 3.1.0
+info:
+  title: Harbinger Motors Taxonomy API
+  version: wp/v2
+  description: 'Read access to the classification layer behind the harbingermotors.com newsroom: the three live
+    post categories (Press Release 25, News 7, Blogs 2), the post_tag vocabulary (registered but empty at capture,
+    0 terms) and the taxonomy registry itself. Verified live on 2026-08-22. Anonymous access is read-only.'
+  contact:
+    name: Harbinger Motors
+    url: https://harbingermotors.com/contact/
+  x-derived-from: https://harbingermotors.com/wp-json/ route index + per-route HTTP OPTIONS schema documents
+  x-derived-on: '2026-08-22'
+  x-api-evangelist-note: Third-party profile. Harbinger Motors publishes no developer program, no API documentation
+    and no developer portal; this documents the anonymously readable WordPress REST content API behind harbingermotors.com.
+    Every path, parameter and schema here was read from the server's own published route index and HTTP OPTIONS
+    schema documents on 2026-08-22 — nothing is invented.
+servers:
+- url: https://harbingermotors.com/wp-json
+  description: Harbinger Motors WordPress REST API
+tags:
+- name: Taxonomy
+  description: Categories, tags and the taxonomy registry.
+paths:
+  /wp/v2/categories:
+    get:
+      operationId: listCategories
+      summary: List categories
+      description: Retrieve the category terms registered on harbingermotors.com.
+      tags:
+      - Taxonomy
+      parameters:
+      - name: context
+        in: query
+        description: Scope under which the request is made; determines fields present in response.
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+      - name: page
+        in: query
+        description: Current page of the collection.
+        schema:
+          type: integer
+          default: 1
+          minimum: 1
+      - name: per_page
+        in: query
+        description: Maximum number of items to be returned in result set.
+        schema:
+          type: integer
+          default: 10
+          minimum: 1
+          maximum: 100
+      - name: search
+        in: query
+        description: Limit results to those matching a string.
+        schema:
+          type: string
+      - name: exclude
+        in: query
+        description: Ensure result set excludes specific IDs.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+      - name: include
+        in: query
+        description: Limit result set to specific IDs.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+      - name: order
+        in: query
+        description: Order sort attribute ascending or descending.
+        schema:
+          type: string
+          default: asc
+          enum:
+          - asc
+          - desc
+      - name: orderby
+        in: query
+        description: Sort collection by term attribute.
+        schema:
+          type: string
+          default: name
+          enum:
+          - id
+          - include
+          - name
+          - slug
+          - include_slugs
+          - term_group
+          - description
+          - count
+      - name: hide_empty
+        in: query
+        description: Whether to hide terms not assigned to any posts.
+        schema:
+          type: boolean
+          default: false
+      - name: parent
+        in: query
+        description: Limit result set to terms assigned to a specific parent.
+        schema:
+          type: integer
+      - name: post
+        in: query
+        description: Limit result set to terms assigned to a specific post.
+        schema:
+          type: integer
+          default: null
+      - name: slug
+        in: query
+        description: Limit result set to terms with one or more specific slugs.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+      - name: _fields
+        in: query
+        description: Comma-separated allowlist of top-level response fields (sparse fieldset). WordPress core parameter,
+          present on every route.
+        schema:
+          type: string
+      - name: _embed
+        in: query
+        description: Inline embeddable linked resources (author, featured media, terms) under _embedded.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: A page of category terms.
+          headers:
+            X-WP-Total:
+              description: Total terms matching the query.
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total pages available.
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+        '400':
+          description: Invalid parameter. WordPress returns `rest_invalid_param` with a per-parameter `data.params`
+            map.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Anonymous request to a capability-gated route or context. Envelope carries a `rest_*_cannot_*`
+            / `rest_forbidden` code.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /wp/v2/categories/{id}:
+    get:
+      operationId: getCategory
+      summary: Get a category term
+      description: Retrieve a single category term by its numeric WordPress term ID.
+      tags:
+      - Taxonomy
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Unique identifier for the category term.
+        schema:
+          type: integer
+      - name: context
+        in: query
+        description: Scope under which the request is made; determines fields present in response.
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+      - name: _fields
+        in: query
+        description: Comma-separated allowlist of top-level response fields (sparse fieldset). WordPress core parameter,
+          present on every route.
+        schema:
+          type: string
+      - name: _embed
+        in: query
+        description: Inline embeddable linked resources (author, featured media, terms) under _embedded.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The category term.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        '401':
+          description: Anonymous request to a capability-gated route or context. Envelope carries a `rest_*_cannot_*`
+            / `rest_forbidden` code.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: No route matched (`rest_no_route`) or the requested record does not exist.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /wp/v2/tags:
+    get:
+      operationId: listTags
+      summary: List tags
+      description: Retrieve the tag terms registered on harbingermotors.com.
+      tags:
+      - Taxonomy
+      parameters:
+      - name: context
+        in: query
+        description: Scope under which the request is made; determines fields present in response.
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+      - name: page
+        in: query
+        description: Current page of the collection.
+        schema:
+          type: integer
+          default: 1
+          minimum: 1
+      - name: per_page
+        in: query
+        description: Maximum number of items to be returned in result set.
+        schema:
+          type: integer
+          default: 10
+          minimum: 1
+          maximum: 100
+      - name: search
+        in: query
+        description: Limit results to those matching a string.
+        schema:
+          type: string
+      - name: exclude
+        in: query
+        description: Ensure result set excludes specific IDs.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+      - name: include
+        in: query
+        description: Limit result set to specific IDs.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+      - name: offset
+        in: query
+        description: Offset the result set by a specific number of items.
+        schema:
+          type: integer
+      - name: order
+        in: query
+        description: Order sort attribute ascending or descending.
+        schema:
+          type: string
+          default: asc
+          enum:
+          - asc
+          - desc
+      - name: orderby
+        in: query
+        description: Sort collection by term attribute.
+        schema:
+          type: string
+          default: name
+          enum:
+          - id
+          - include
+          - name
+          - slug
+          - include_slugs
+          - term_group
+          - description
+          - count
+      - name: hide_empty
+        in: query
+        description: Whether to hide terms not assigned to any posts.
+        schema:
+          type: boolean
+          default: false
+      - name: post
+        in: query
+        description: Limit result set to terms assigned to a specific post.
+        schema:
+          type: integer
+          default: null
+      - name: slug
+        in: query
+        description: Limit result set to terms with one or more specific slugs.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+      - name: _fields
+        in: query
+        description: Comma-separated allowlist of top-level response fields (sparse fieldset). WordPress core parameter,
+          present on every route.
+        schema:
+          type: string
+      - name: _embed
+        in: query
+        description: Inline embeddable linked resources (author, featured media, terms) under _embedded.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: A page of tag terms.
+          headers:
+            X-WP-Total:
+              description: Total terms matching the query.
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total pages available.
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tag'
+        '400':
+          description: Invalid parameter. WordPress returns `rest_invalid_param` with a per-parameter `data.params`
+            map.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Anonymous request to a capability-gated route or context. Envelope carries a `rest_*_cannot_*`
+            / `rest_forbidden` code.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /wp/v2/tags/{id}:
+    get:
+      operationId: getTag
+      summary: Get a tag term
+      description: Retrieve a single tag term by its numeric WordPress term ID.
+      tags:
+      - Taxonomy
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Unique identifier for the tag term.
+        schema:
+          type: integer
+      - name: context
+        in: query
+        description: Scope under which the request is made; determines fields present in response.
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+      - name: _fields
+        in: query
+        description: Comma-separated allowlist of top-level response fields (sparse fieldset). WordPress core parameter,
+          present on every route.
+        schema:
+          type: string
+      - name: _embed
+        in: query
+        description: Inline embeddable linked resources (author, featured media, terms) under _embedded.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The tag term.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+        '401':
+          description: Anonymous request to a capability-gated route or context. Envelope carries a `rest_*_cannot_*`
+            / `rest_forbidden` code.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: No route matched (`rest_no_route`) or the requested record does not exist.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /wp/v2/taxonomies:
+    get:
+      operationId: listTaxonomies
+      summary: List taxonomies
+      description: Retrieve the taxonomies registered on harbingermotors.com and the post types each one classifies.
+      tags:
+      - Taxonomy
+      parameters:
+      - name: context
+        in: query
+        description: Scope under which the request is made; determines fields present in response.
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+      - name: type
+        in: query
+        description: Limit results to taxonomies associated with a specific post type.
+        schema:
+          type: string
+      - name: _fields
+        in: query
+        description: Comma-separated allowlist of top-level response fields (sparse fieldset). WordPress core parameter,
+          present on every route.
+        schema:
+          type: string
+      - name: _embed
+        in: query
+        description: Inline embeddable linked resources (author, featured media, terms) under _embedded.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: A map of taxonomy slug to taxonomy definition.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: '#/components/schemas/Taxonomy'
+        '400':
+          description: Invalid parameter. WordPress returns `rest_invalid_param` with a per-parameter `data.params`
+            map.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Anonymous request to a capability-gated route or context. Envelope carries a `rest_*_cannot_*`
+            / `rest_forbidden` code.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /wp/v2/taxonomies/{taxonomy}:
+    get:
+      operationId: getTaxonomy
+      summary: Get a taxonomy
+      description: Retrieve one taxonomy definition by slug (`category` or `post_tag`).
+      tags:
+      - Taxonomy
+      parameters:
+      - name: taxonomy
+        in: path
+        required: true
+        description: Taxonomy slug.
+        schema:
+          type: string
+      - name: context
+        in: query
+        description: Scope under which the request is made; determines fields present in response.
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+      - name: _fields
+        in: query
+        description: Comma-separated allowlist of top-level response fields (sparse fieldset). WordPress core parameter,
+          present on every route.
+        schema:
+          type: string
+      - name: _embed
+        in: query
+        description: Inline embeddable linked resources (author, featured media, terms) under _embedded.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The taxonomy definition.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Taxonomy'
+        '401':
+          description: Anonymous request to a capability-gated route or context. Envelope carries a `rest_*_cannot_*`
+            / `rest_forbidden` code.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: No route matched (`rest_no_route`) or the requested record does not exist.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    Category:
+      type: object
+      properties:
+        id:
+          description: Unique identifier for the term.
+          type: integer
+        count:
+          description: Number of published posts for the term.
+          type: integer
+        description:
+          description: HTML description of the term.
+          type: string
+        link:
+          description: URL of the term.
+          type: string
+          format: uri
+        name:
+          description: HTML title for the term.
+          type: string
+        slug:
+          description: An alphanumeric identifier for the term unique to its type.
+          type: string
+        taxonomy:
+          description: Type attribution for the term.
+          type: string
+          enum:
+          - category
+        parent:
+          description: The parent term ID.
+          type: integer
+        meta:
+          description: Meta fields.
+          type: object
+        acf:
+          description: ACF field data
+          type: object
+    Tag:
+      type: object
+      properties:
+        id:
+          description: Unique identifier for the term.
+          type: integer
+        count:
+          description: Number of published posts for the term.
+          type: integer
+        description:
+          description: HTML description of the term.
+          type: string
+        link:
+          description: URL of the term.
+          type: string
+          format: uri
+        name:
+          description: HTML title for the term.
+          type: string
+        slug:
+          description: An alphanumeric identifier for the term unique to its type.
+          type: string
+        taxonomy:
+          description: Type attribution for the term.
+          type: string
+          enum:
+          - post_tag
+        meta:
+          description: Meta fields.
+          type: object
+    Taxonomy:
+      type: object
+      properties:
+        capabilities:
+          description: All capabilities used by the taxonomy.
+          type: object
+        description:
+          description: A human-readable description of the taxonomy.
+          type: string
+        hierarchical:
+          description: Whether or not the taxonomy should have children.
+          type: boolean
+        labels:
+          description: Human-readable labels for the taxonomy for various contexts.
+          type: object
+        name:
+          description: The title for the taxonomy.
+          type: string
+        slug:
+          description: An alphanumeric identifier for the taxonomy.
+          type: string
+        show_cloud:
+          description: Whether or not the term cloud should be displayed.
+          type: boolean
+        types:
+          description: Types associated with the taxonomy.
+          type: array
+          items:
+            type: string
+        rest_base:
+          description: REST base route for the taxonomy.
+          type: string
+        rest_namespace:
+          description: REST namespace route for the taxonomy.
+          type: string
+        visibility:
+          description: The visibility settings for the taxonomy.
+          type: object
+          properties:
+            public:
+              description: Whether a taxonomy is intended for use publicly either via the admin interface or by
+                front-end users.
+              type: boolean
+            publicly_queryable:
+              description: Whether the taxonomy is publicly queryable.
+              type: boolean
+            show_ui:
+              description: Whether to generate a default UI for managing this taxonomy.
+              type: boolean
+            show_admin_column:
+              description: Whether to allow automatic creation of taxonomy columns on associated post-types table.
+              type: boolean
+            show_in_nav_menus:
+              description: Whether to make the taxonomy available for selection in navigation menus.
+              type: boolean
+            show_in_quick_edit:
+              description: Whether to show the taxonomy in the quick/bulk edit panel.
+              type: boolean
+    Error:
+      type: object
+      description: WordPress REST error envelope. Observed live on this host; it is not RFC 9457 problem+json.
+      properties:
+        code:
+          type: string
+          description: Stable machine-readable error code. Match on this, never on `message`.
+        message:
+          type: string
+          description: Human-readable message. Localized and subject to change.
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+              description: HTTP status code, repeated in the body.
+            params:
+              type: object
+              description: Per-parameter validation messages, present on rest_invalid_param.
+            details:
+              type: object
+              description: Per-parameter structured detail, present on rest_invalid_param.
+      required:
+      - code
+      - message

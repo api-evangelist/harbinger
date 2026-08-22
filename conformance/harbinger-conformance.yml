@@ -1,0 +1,73 @@
+generated: '2026-08-22'
+method: derived
+source: openapi/ + live responses observed on https://harbingermotors.com/wp-json/ on 2026-08-22
+description: >-
+  Which cross-cutting and domain standards the harbingermotors.com content API actually conforms
+  to. Harbinger Motors makes no published conformance or compliance claim anywhere on its site, so
+  nothing here is a claim being repeated — every entry was checked against the live surface. No
+  `Compliance` pointer is emitted in apis.yml, because there is no published compliance program to
+  point at.
+standards:
+- id: oauth2
+  conforms: false
+  evidence: 'No oauth2 securityScheme in any spec; the API index advertises `authentication: []`.'
+- id: oidc
+  conforms: false
+  evidence: '/.well-known/openid-configuration returns 404 on harbingermotors.com.'
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: 'Errors are the WordPress envelope {code, message, data.status} served as application/json, not application/problem+json.'
+- id: rfc8288-web-linking
+  conforms: true
+  evidence: 'Collection responses return a Link header with rel="next"/"prev". Observed on GET /wp/v2/posts?per_page=2.'
+- id: rfc8615-well-known
+  conforms: false
+  evidence: 'Every /.well-known/ path probed on harbingermotors.com returned 404. See well-known/harbinger-well-known.yml.'
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: '/.well-known/security.txt returns 404.'
+- id: hal-style-hypermedia
+  conforms: true
+  evidence: 'Every record carries a `_links` relation object with self/collection/about/author/wp:term curies, and `_embed` inlines them.'
+- id: oembed-1.0
+  conforms: true
+  evidence: '/oembed/1.0/embed implements the oEmbed 1.0 provider contract and returns a rich response with provider, author, title, thumbnail and html. Verified live.'
+- id: json-schema
+  conforms: true
+  evidence: 'Every route publishes a JSON Schema for its resource via HTTP OPTIONS; these are the schemas carried into openapi/components.'
+- id: schema-org-json-ld
+  conforms: true
+  evidence: 'The Yoast get_head endpoint returns a schema.org JSON-LD @graph for any site URL. Verified live against Yoast SEO 28.3.'
+- id: pagination-conventions
+  conforms: true
+  evidence: 'page/per_page/offset with X-WP-Total and X-WP-TotalPages counters, both exposed via Access-Control-Expose-Headers.'
+- id: idempotency-key
+  conforms: false
+  evidence: 'No Idempotency-Key header is accepted. Not applicable — there is no public write surface.'
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: 'No Sunset or Deprecation header on any observed response, and no deprecation policy published.'
+- id: openapi
+  conforms: false
+  evidence: 'Harbinger publishes no OpenAPI. The specs in openapi/ are third-party derivations of the server''s own route index — a derived contract, not a published one.'
+domain_standards:
+  detail: >-
+    Harbinger Motors operates in commercial fleet vehicles. The market does have machine-readable
+    standards a vehicle OEM could speak — SAE J1939 and J1979 vehicle bus messages, SAE J2735 for
+    V2X, OCPP and OCPI for charging infrastructure, ISO 15118 for plug-and-charge, and the ATA/TMC
+    telematics and ELD data formats a fleet integrator would expect from a truck maker. NONE of
+    them appears on any public Harbinger surface: the contract profiled here is a WordPress content
+    API and has no vehicle, telematics, charging or diagnostics data in it at all.
+  standards_checked:
+  - {id: ocpp, present: false, note: No charging-network endpoint published, despite a /charging/ marketing page.}
+  - {id: ocpi, present: false}
+  - {id: iso-15118, present: false}
+  - {id: sae-j1939, present: false}
+  - {id: sae-j2735, present: false}
+  - {id: ata-tmc-telematics, present: false, note: 'The /technology/ page markets integrated telematics, ELD integration and predictive maintenance; no public data interface to any of it exists.'}
+  conforms: false
+  scored: false
+  note: >-
+    REWARD-ONLY dimension. Recorded as an observed absence for the market, not as a penalty — but
+    it is the single most useful finding in this file for a fleet buyer, because it says plainly
+    that Harbinger's telematics story has no public integration surface behind it today.

@@ -1,0 +1,127 @@
+openapi: 3.1.0
+info:
+  title: Harbinger Motors oEmbed API
+  version: wp/v2
+  description: The oEmbed 1.0 provider endpoint for harbingermotors.com. Given the URL of any Harbinger Motors page,
+    post or event it returns a rich-embed descriptor — provider name, author, title, thumbnail and an iframe HTML
+    fragment. Verified live on 2026-08-22 and anonymous.
+  contact:
+    name: Harbinger Motors
+    url: https://harbingermotors.com/contact/
+  x-derived-from: https://harbingermotors.com/wp-json/ route index + per-route HTTP OPTIONS schema documents
+  x-derived-on: '2026-08-22'
+  x-api-evangelist-note: Third-party profile. Harbinger Motors publishes no developer program, no API documentation
+    and no developer portal; this documents the anonymously readable WordPress REST content API behind harbingermotors.com.
+    Every path, parameter and schema here was read from the server's own published route index and HTTP OPTIONS
+    schema documents on 2026-08-22 — nothing is invented.
+servers:
+- url: https://harbingermotors.com/wp-json
+  description: Harbinger Motors WordPress REST API
+tags:
+- name: oEmbed
+  description: oEmbed 1.0 rich-embed descriptors.
+paths:
+  /oembed/1.0/embed:
+    get:
+      operationId: getOembed
+      summary: Get an oEmbed response
+      description: Return the oEmbed descriptor for a harbingermotors.com URL.
+      tags:
+      - oEmbed
+      parameters:
+      - name: url
+        in: query
+        description: The URL of the resource for which to fetch oEmbed data.
+        required: true
+        schema:
+          type: string
+          format: uri
+      - name: format
+        in: query
+        schema:
+          default: json
+      - name: maxwidth
+        in: query
+        schema:
+          default: 600
+      responses:
+        '200':
+          description: The oEmbed response document (JSON or XML per the `format` parameter).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OembedResponse'
+        '400':
+          description: Invalid parameter. WordPress returns `rest_invalid_param` with a per-parameter `data.params`
+            map.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: No route matched (`rest_no_route`) or the requested record does not exist.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    OembedResponse:
+      type: object
+      description: oEmbed 1.0 rich response as returned by WordPress core.
+      properties:
+        version:
+          type: string
+        provider_name:
+          type: string
+        provider_url:
+          type: string
+          format: uri
+        author_name:
+          type: string
+        author_url:
+          type: string
+          format: uri
+        title:
+          type: string
+        type:
+          type: string
+        width:
+          type: integer
+        height:
+          type: integer
+        html:
+          type: string
+          description: Iframe embed markup.
+        thumbnail_url:
+          type: string
+          format: uri
+        thumbnail_width:
+          type: integer
+        thumbnail_height:
+          type: integer
+    Error:
+      type: object
+      description: WordPress REST error envelope. Observed live on this host; it is not RFC 9457 problem+json.
+      properties:
+        code:
+          type: string
+          description: Stable machine-readable error code. Match on this, never on `message`.
+        message:
+          type: string
+          description: Human-readable message. Localized and subject to change.
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+              description: HTTP status code, repeated in the body.
+            params:
+              type: object
+              description: Per-parameter validation messages, present on rest_invalid_param.
+            details:
+              type: object
+              description: Per-parameter structured detail, present on rest_invalid_param.
+      required:
+      - code
+      - message

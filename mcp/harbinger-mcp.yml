@@ -1,0 +1,152 @@
+generated: '2026-08-22'
+method: derived
+status: candidate
+source: openapi/ (22 operations across 9 derived specs)
+description: 'Harbinger Motors operates no MCP server. Searched the site, the npm registry, PyPI and mcp.harbingermotors.com
+  (NXDOMAIN) on 2026-08-22 and found none. The tool list below is a CANDIDATE derived one-to-one from the OpenAPI
+  operations this repo harvested from the site''s own published route index — it is what an MCP server over this
+  surface would expose, not something Harbinger publishes. Every tool is read-only because the whole anonymous
+  surface is read-only. No MCPServer pointer is emitted in apis.yml: the provider ships no server, and a pointer
+  would assert one exists.'
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: none
+  verified: searched
+  note: 'mode: none — nobody ships a server for this surface. The candidate tools below would need no auth if
+    one existed, because the underlying API is anonymously readable.'
+server:
+  name: harbinger
+  transport: http
+  url: null
+  published: false
+searched:
+- target: https://mcp.harbingermotors.com
+  result: NXDOMAIN
+- target: npm registry search "harbingermotors"
+  result: 0 results
+  http_status: 200
+- target: npm registry search "harbinger" (17 results)
+  result: no first-party MCP server; all name collisions
+  http_status: 200
+- target: https://harbingermotors.com/.well-known/mcp.json
+  result: '404'
+- target: https://harbingermotors.com/llms.txt
+  result: '404'
+auth:
+  required: false
+  note: All listed tools would work anonymously over plain HTTPS.
+tool_count: 22
+tools:
+- name: get_api_index
+  description: Get the API index
+  source_operation: openapi/harbinger-discovery-api-openapi.yml#getApiIndex
+  read_only: true
+  category: Discovery
+- name: get_namespace_index
+  description: Get the wp/v2 namespace index
+  source_operation: openapi/harbinger-discovery-api-openapi.yml#getNamespaceIndex
+  read_only: true
+  category: Discovery
+- name: list_types
+  description: List post types
+  source_operation: openapi/harbinger-discovery-api-openapi.yml#listTypes
+  read_only: true
+  category: Discovery
+- name: get_type
+  description: Get a post type
+  source_operation: openapi/harbinger-discovery-api-openapi.yml#getType
+  read_only: true
+  category: Discovery
+- name: list_statuses
+  description: List post statuses
+  source_operation: openapi/harbinger-discovery-api-openapi.yml#listStatuses
+  read_only: true
+  category: Discovery
+- name: list_events
+  description: List events
+  source_operation: openapi/harbinger-events-api-openapi.yml#listEvents
+  read_only: true
+  category: Events
+- name: get_event
+  description: Get a event
+  source_operation: openapi/harbinger-events-api-openapi.yml#getEvent
+  read_only: true
+  category: Events
+- name: list_media
+  description: List media items
+  source_operation: openapi/harbinger-media-api-openapi.yml#listMedia
+  read_only: true
+  category: Media
+- name: get_media
+  description: Get a media item
+  source_operation: openapi/harbinger-media-api-openapi.yml#getMedia
+  read_only: true
+  category: Media
+- name: get_oembed
+  description: Get an oEmbed response
+  source_operation: openapi/harbinger-oembed-api-openapi.yml#getOembed
+  read_only: true
+  category: oEmbed
+- name: list_pages
+  description: List pages
+  source_operation: openapi/harbinger-pages-api-openapi.yml#listPages
+  read_only: true
+  category: Pages
+- name: get_page
+  description: Get a page
+  source_operation: openapi/harbinger-pages-api-openapi.yml#getPage
+  read_only: true
+  category: Pages
+- name: list_posts
+  description: List posts
+  source_operation: openapi/harbinger-posts-api-openapi.yml#listPosts
+  read_only: true
+  category: Posts
+- name: get_post
+  description: Get a post
+  source_operation: openapi/harbinger-posts-api-openapi.yml#getPost
+  read_only: true
+  category: Posts
+- name: search
+  description: Search the site
+  source_operation: openapi/harbinger-search-api-openapi.yml#search
+  read_only: true
+  category: Search
+- name: get_seo_head
+  description: Get rendered SEO head for a URL
+  source_operation: openapi/harbinger-seo-api-openapi.yml#getSeoHead
+  read_only: true
+  category: SEO
+- name: list_categories
+  description: List categories
+  source_operation: openapi/harbinger-taxonomy-api-openapi.yml#listCategories
+  read_only: true
+  category: Taxonomy
+- name: get_category
+  description: Get a category term
+  source_operation: openapi/harbinger-taxonomy-api-openapi.yml#getCategory
+  read_only: true
+  category: Taxonomy
+- name: list_tags
+  description: List tags
+  source_operation: openapi/harbinger-taxonomy-api-openapi.yml#listTags
+  read_only: true
+  category: Taxonomy
+- name: get_tag
+  description: Get a tag term
+  source_operation: openapi/harbinger-taxonomy-api-openapi.yml#getTag
+  read_only: true
+  category: Taxonomy
+- name: list_taxonomies
+  description: List taxonomies
+  source_operation: openapi/harbinger-taxonomy-api-openapi.yml#listTaxonomies
+  read_only: true
+  category: Taxonomy
+- name: get_taxonomy
+  description: Get a taxonomy
+  source_operation: openapi/harbinger-taxonomy-api-openapi.yml#getTaxonomy
+  read_only: true
+  category: Taxonomy

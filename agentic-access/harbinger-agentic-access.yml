@@ -1,0 +1,268 @@
+generated: '2026-08-22'
+method: generated
+source: openapi/harbinger-discovery-api-openapi.yml, openapi/harbinger-events-api-openapi.yml, openapi/harbinger-media-api-openapi.yml,
+  openapi/harbinger-oembed-api-openapi.yml, openapi/harbinger-pages-api-openapi.yml, openapi/harbinger-posts-api-openapi.yml,
+  openapi/harbinger-search-api-openapi.yml, openapi/harbinger-seo-api-openapi.yml, openapi/harbinger-taxonomy-api-openapi.yml
+description: Recommended x-agentic-access execution contracts, classified from the derived OpenAPI. Every publicly
+  reachable operation on this surface is an anonymous read with no side effect and nothing to reverse, so the
+  classification is uniform — that uniformity is the finding, not a shortcut. A governance starting point for
+  exposing this API to AI agents; review and bind audience per deployment.
+summary:
+  operations: 22
+  by_action_class:
+    connected: 22
+  by_consequence:
+    read: 22
+  human_in_the_loop_required: 0
+  write_operations: 0
+  note: No public write operation exists. Anonymous POST/PUT/PATCH/DELETE returns 401 rest_cannot_create.
+operations:
+- path: /
+  method: get
+  operationId: getApiIndex
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    reversible: na
+- path: /wp/v2
+  method: get
+  operationId: getNamespaceIndex
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    reversible: na
+- path: /wp/v2/types
+  method: get
+  operationId: listTypes
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    reversible: na
+- path: /wp/v2/types/{type}
+  method: get
+  operationId: getType
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    reversible: na
+- path: /wp/v2/statuses
+  method: get
+  operationId: listStatuses
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    reversible: na
+- path: /wp/v2/event
+  method: get
+  operationId: listEvents
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    reversible: na
+- path: /wp/v2/event/{id}
+  method: get
+  operationId: getEvent
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    reversible: na
+- path: /wp/v2/media
+  method: get
+  operationId: listMedia
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    reversible: na
+- path: /wp/v2/media/{id}
+  method: get
+  operationId: getMedia
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    reversible: na
+- path: /oembed/1.0/embed
+  method: get
+  operationId: getOembed
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    reversible: na
+- path: /wp/v2/pages
+  method: get
+  operationId: listPages
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    reversible: na
+- path: /wp/v2/pages/{id}
+  method: get
+  operationId: getPage
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    reversible: na
+- path: /wp/v2/posts
+  method: get
+  operationId: listPosts
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    reversible: na
+- path: /wp/v2/posts/{id}
+  method: get
+  operationId: getPost
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    reversible: na
+- path: /wp/v2/search
+  method: get
+  operationId: search
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    reversible: na
+- path: /yoast/v1/get_head
+  method: get
+  operationId: getSeoHead
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    reversible: na
+- path: /wp/v2/categories
+  method: get
+  operationId: listCategories
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    reversible: na
+- path: /wp/v2/categories/{id}
+  method: get
+  operationId: getCategory
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    reversible: na
+- path: /wp/v2/tags
+  method: get
+  operationId: listTags
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    reversible: na
+- path: /wp/v2/tags/{id}
+  method: get
+  operationId: getTag
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    reversible: na
+- path: /wp/v2/taxonomies
+  method: get
+  operationId: listTaxonomies
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    reversible: na
+- path: /wp/v2/taxonomies/{taxonomy}
+  method: get
+  operationId: getTaxonomy
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    reversible: na
+guardrails:
+  rate: No published limit and no runtime signal. Self-throttle to 1-2 concurrent requests. See rate-limits/harbinger-rate-limits.yml.
+  freshness: No Cache-Control, ETag or Last-Modified is returned, so an agent cannot revalidate cheaply and cannot
+    tell a stale read from a fresh one.
+  pii: Author ids appear on records but /wp/v2/users is 401-gated, so no personal data is resolvable anonymously.
+  tracking: Responses set a _fbp Meta advertising cookie. A machine client must discard cookies.
+  indexing: 'Every response carries X-Robots-Tag: noindex. Treat the data as readable-but-not-republishable-as-content.'

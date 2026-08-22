@@ -1,0 +1,36 @@
+generated: '2026-08-22'
+method: searched
+source: https://harbingermotors.com/ site walk on 2026-08-22 — every page in the published sitemap was checked for an API or developer pricing page
+plan_count: 0
+note: >-
+  There are no API plans. Harbinger Motors sells medium-duty vehicles, chassis and power systems
+  through dealers and a lease-to-own program, and its published commercial pages
+  (/lease-to-own-program/, /incentives/, /sourcewell/, /tco-calculator/, /dealers/) price vehicles,
+  not API access. The content API documented in this repo is anonymously readable at no cost, with
+  no signup, no account, no key and no quota — there is nothing to buy and nothing to meter. This
+  is a plan_count of 0 because no API plans exist, not because none were found.
+plans: []
+vehicle_commercial_surface:
+  detail: >-
+    Recorded for completeness because it is what the company actually sells. None of these is an
+    API plan and none should be scored as one.
+  pages:
+  - {name: Lease to Own Program, url: 'https://harbingermotors.com/lease-to-own-program/', http_status: 200}
+  - {name: Incentives, url: 'https://harbingermotors.com/incentives/', http_status: 200}
+  - {name: Sourcewell cooperative purchasing, url: 'https://harbingermotors.com/sourcewell/', http_status: 200}
+  - {name: TCO Calculator, url: 'https://harbingermotors.com/tco-calculator/', http_status: 200}
+  - {name: Find a Dealer, url: 'https://harbingermotors.com/dealers/', http_status: 200}
+  published_vehicle_prices: false
+  published_vehicle_prices_note: No unit price is published on any of these pages; pricing runs through a dealer or the contact form.
+api_access:
+  cost: free
+  signup_required: false
+  key_required: false
+  quota: none published
+evidence:
+- url: https://harbingermotors.com/page-sitemap.xml
+  http_status: 200
+  note: 35 pages enumerated; no /pricing, /plans, /developers, /api or /developer-portal page exists.
+- url: https://harbingermotors.com/wp-json/wp/v2/posts?per_page=1
+  http_status: 200
+  note: Read anonymously with no credential.

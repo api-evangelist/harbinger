@@ -1,0 +1,56 @@
+generated: '2026-08-22'
+method: probed
+source: live probes of https://harbingermotors.com/.well-known/* and https://harbinger.industries/.well-known/* on 2026-08-22
+hit_count: 0
+note: >-
+  Neither Harbinger host serves an RFC 8615 discovery surface of any kind. Every path returned a
+  real 404 carrying the site's HTML 404 page — confirmed against a nonsense control path
+  (/.well-known/zzz-control-probe) which returned the identical 404 body and byte count, so these
+  are honest absences and not a soft-200 catch-all masking a hit. NO WellKnown and NO SecurityTxt
+  pointer is emitted in apis.yml, because a pointer would assert that Harbinger serves a surface it
+  does not serve. There is one API host to probe: the API, docs and website are all
+  harbingermotors.com, and every candidate developer subdomain is NXDOMAIN.
+hosts:
+- host: https://harbingermotors.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404, content_type: text/html, file: null}
+  - {path: /.well-known/openid-configuration, status: 404, content_type: text/html, file: null}
+  - {path: /.well-known/oauth-authorization-server, status: 404, content_type: text/html, file: null}
+  - {path: /.well-known/oauth-protected-resource, status: 404, content_type: text/html, file: null}
+  - {path: /.well-known/api-catalog, status: 404, content_type: text/html, file: null}
+  - {path: /.well-known/ai-plugin.json, status: 404, content_type: text/html, file: null}
+  - {path: /.well-known/agent-card.json, status: 404, content_type: text/html, file: null}
+  - {path: /.well-known/agent.json, status: 404, content_type: text/html, file: null}
+  - {path: /.well-known/mcp.json, status: 404, content_type: text/html, file: null}
+  - {path: /.well-known/dnt-policy.txt, status: 404, content_type: text/html, file: null}
+- host: https://harbinger.industries
+  documents:
+  - {path: /.well-known/security.txt, status: 404, content_type: text/plain, file: null}
+  - {path: /.well-known/agent-card.json, status: 404, content_type: text/plain, file: null}
+soft_404_control:
+  path: /.well-known/zzz-control-probe
+  status: 404
+  bytes: 154937
+  note: Identical status, content-type and byte count to every probed path above. The host is not a 200 catch-all; the 404s are real.
+related_probes:
+- {path: /llms.txt, status: 404, note: 'No provider-published llms.txt on either host; a generated one is in llms/.'}
+- {path: /robots.txt, status: 200, note: 'Yoast block with "Disallow:" (nothing disallowed) plus one wp-content path; points at sitemap_index.xml. Nothing in this pass was blocked by robots.'}
+- {path: /sitemap.xml, status: 200, note: Yoast sitemap index; 5 child sitemaps (post, page, event, category, author).}
+- {path: /wp-json/, status: 200, note: 'The one real machine-readable surface on the host: the WordPress REST API index, 362 routes across 14 namespaces.'}
+- {path: /openapi.json, status: 404}
+- {path: /swagger.json, status: 404}
+- {path: /api-docs, status: 404}
+- {path: /apis.json, status: 404}
+subdomains_checked:
+- {host: api.harbingermotors.com, dns: NXDOMAIN}
+- {host: docs.harbingermotors.com, dns: NXDOMAIN}
+- {host: developer.harbingermotors.com, dns: NXDOMAIN}
+- {host: developers.harbingermotors.com, dns: NXDOMAIN}
+- {host: fleet.harbingermotors.com, dns: NXDOMAIN}
+- {host: portal.harbingermotors.com, dns: NXDOMAIN}
+- {host: connect.harbingermotors.com, dns: NXDOMAIN}
+- {host: app.harbingermotors.com, dns: NXDOMAIN}
+- {host: my.harbingermotors.com, dns: NXDOMAIN}
+- {host: status.harbingermotors.com, dns: NXDOMAIN}
+- {host: support.harbingermotors.com, dns: NXDOMAIN}
+- {host: mcp.harbingermotors.com, dns: NXDOMAIN}

@@ -1,0 +1,29 @@
+generated: '2026-08-22'
+method: probed
+source: live response headers observed on https://harbingermotors.com/wp-json/ on 2026-08-22
+limit_count: 0
+documented: false
+note: >-
+  Harbinger Motors publishes no rate limits, because it publishes no API documentation at all. No
+  RateLimit-*, X-RateLimit-* or Retry-After header appeared on any response observed in this pass,
+  and no 429 was produced. That is an honest zero and not a claim of unlimited access: the origin
+  is a LiteSpeed WordPress host and any throttling is likely to be at the web-server or edge layer,
+  invisible in the response and liable to appear as a 429 or a connection reset without warning. An
+  agent has no runtime signal here and must self-throttle conservatively.
+limits: []
+response_headers_observed: []
+exhaustion_status_code: null
+guidance:
+  recommended_client_behaviour: >-
+    Keep concurrency at 1-2, put a few hundred milliseconds between requests, and use `_fields` to
+    keep responses small rather than paging aggressively. The whole readable corpus is small — 34
+    posts, 35 pages, 7 events, 624 media items — so a complete crawl is a few dozen requests, not
+    thousands.
+  backoff: Exponential backoff on any 429 or 5xx, honouring Retry-After if one ever appears.
+evidence:
+- url: 'https://harbingermotors.com/wp-json/wp/v2/posts?per_page=2'
+  http_status: 200
+  ratelimit_headers: none
+- url: https://harbingermotors.com/wp-json/
+  http_status: 200
+  ratelimit_headers: none

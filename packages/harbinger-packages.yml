@@ -1,0 +1,45 @@
+generated: '2026-08-22'
+method: searched
+source: npm registry search, PyPI, GitHub org lookup on 2026-08-22
+package_count: 0
+official_package_count: 0
+note: >-
+  Harbinger Motors publishes no client libraries. Searched npm, PyPI and GitHub on 2026-08-22 and
+  found no first-party package under any Harbinger Motors name — every "harbinger" hit belongs to
+  an unrelated project (a Tezos oracle by tacoinfra, an AI-agent framework by harbinger-ai, and a
+  placeholder 0.0.1 squat). There is no SDK to date-check, so there is no abandonment signal to
+  read here either: this is the absence of a program, not a decayed one. The content API this repo
+  documents is plain HTTP + JSON and needs no client library. No `SDKs` pointer is emitted in
+  apis.yml, because emitting one would credit Harbinger with client libraries it does not ship.
+packages: []
+registries_checked:
+- {registry: npm, query: harbingermotors, results: 0, url: 'https://registry.npmjs.org/-/v1/search?text=harbingermotors', http_status: 200}
+- {registry: npm, query: harbinger, results: 17, first_party: 0, url: 'https://registry.npmjs.org/-/v1/search?text=harbinger', http_status: 200, note: 'All 17 are name collisions — @tacoinfra/harbinger-lib and -cli are a Tezos BTC/USD oracle; @harbinger-ai/harbinger is an unrelated agent framework; `harbinger` 0.0.1 is an empty placeholder.'}
+- {registry: pypi, query: harbinger-motors, results: 0, url: https://pypi.org/pypi/harbinger-motors/json, http_status: 404}
+- {registry: pypi, query: harbingermotors, results: 0, url: https://pypi.org/pypi/harbingermotors/json, http_status: 404}
+- {registry: pypi, query: harbinger, results: 1, first_party: 0, url: https://pypi.org/pypi/harbinger/json, http_status: 200, note: Name collision, unrelated to the vehicle manufacturer.}
+unverified_leads:
+- kind: github-organization
+  url: https://github.com/harbingermotors
+  http_status: 200
+  created: '2023-10-16'
+  public_repos: 0
+  official: unverified
+  note: >-
+    A GitHub organization with the exact company handle exists but has zero public repositories, no
+    linked website, no email, no bio and no location. Ownership by the company is plausible but
+    unproven, so no GitHubOrganization pointer is emitted in apis.yml — an empty, unattributable
+    org is not evidence of a public code presence.
+- kind: github-organization
+  url: https://github.com/Harbinger-Motors
+  http_status: 200
+  created: '2023-01-26'
+  public_repos: 1
+  official: unverified
+  repos:
+  - {name: gcp-cloud-storage-uploader, description: CLI utility to upload a file to Google Cloud Storage, language: Go, pushed_at: '2023-03-20'}
+  note: >-
+    A second organization under a hyphenated variant of the name, carrying one small internal Go
+    utility last pushed in March 2023. It is not an API client, not a published package (it is on
+    no registry), and the org carries no website, email or bio tying it to harbingermotors.com. Not
+    wired as a pointer and not counted as a package.

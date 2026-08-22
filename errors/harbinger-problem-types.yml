@@ -1,0 +1,129 @@
+generated: '2026-08-22'
+method: probed
+source: live error responses observed against https://harbingermotors.com/wp-json/ on 2026-08-22
+format: wp-rest-error
+rfc9457: false
+envelope:
+  shape: '{code, message, data: {status, params?, details?}}'
+  content_type: application/json; charset=UTF-8
+  matching_rule: >-
+    Match on `code`. It is the stable machine-readable identifier. `message` is a localized human
+    string and changes with the WordPress version and site locale; `data.status` repeats the HTTP
+    status in the body.
+  problem_json: false
+  note: >-
+    This surface does not emit application/problem+json and declares no `type` URIs. There is no
+    published error reference for it either, because Harbinger Motors publishes no API
+    documentation — every entry below was produced by making the failing request.
+problems:
+- code: rest_invalid_param
+  status: 400
+  title: Invalid parameter
+  detail: One or more query parameters failed validation. `data.params` maps each offending parameter to a message and `data.details` carries a structured per-parameter code.
+  remediation: Read `data.params` and correct the named parameter. per_page is bounded to 1..100; orderby is an enum declared per route in the OPTIONS document.
+  observed_at: 'https://harbingermotors.com/wp-json/wp/v2/posts?per_page=999'
+  observed_message: 'Invalid parameter(s): per_page'
+  source_operation: openapi/harbinger-posts-api-openapi.yml#listPosts
+- code: rest_missing_callback_param
+  status: 400
+  title: Missing required parameter
+  detail: A required query parameter was omitted. `data.params` is an array of the missing names.
+  remediation: Supply the named parameter. The Yoast get_head endpoint requires `url`.
+  observed_at: https://harbingermotors.com/wp-json/yoast/v1/get_head
+  observed_message: 'Missing parameter(s): url'
+  source_operation: openapi/harbinger-seo-api-openapi.yml#getSeoHead
+- code: rest_forbidden_context
+  status: 401
+  title: Context not permitted
+  detail: '`context=edit` was requested anonymously. The edit context exposes unrendered fields and requires an authenticated capability.'
+  remediation: Use `context=view` (the default) or `context=embed`. There is no public path to obtain edit credentials on this host.
+  observed_at: 'https://harbingermotors.com/wp-json/wp/v2/posts?context=edit'
+  observed_message: Sorry, you are not allowed to edit posts in this post type.
+  source_operation: openapi/harbinger-posts-api-openapi.yml#listPosts
+- code: rest_cannot_create
+  status: 401
+  title: Not allowed to create
+  detail: An anonymous write was attempted against a capability-gated route.
+  remediation: None available publicly. This surface is read-only for third parties.
+  observed_at: https://harbingermotors.com/wp-json/wp/v2/posts
+  observed_message: Sorry, you are not allowed to create posts as this user.
+- code: rest_forbidden
+  status: 401
+  title: Forbidden
+  detail: Generic capability denial, returned by administrative routes such as /wp/v2/settings and /wp-abilities/v1/abilities.
+  remediation: Not a public route. Do not include it in an integration.
+  observed_at: https://harbingermotors.com/wp-json/wp/v2/settings
+  observed_message: Sorry, you are not allowed to do that.
+- code: rest_user_cannot_view
+  status: 401
+  title: Not allowed to list users
+  detail: The user directory is closed to anonymous callers on this host, so post `author` ids cannot be resolved to names via /wp/v2/users.
+  remediation: Use `_embed` on a post to obtain the embedded author record instead of calling /wp/v2/users.
+  observed_at: https://harbingermotors.com/wp-json/wp/v2/users
+  observed_message: Sorry, you are not allowed to list users.
+- code: rest_cannot_view
+  status: 401
+  title: Not allowed to view
+  detail: Returned by /wp/v2/menus and other editor-scoped collections.
+  remediation: Not a public route.
+  observed_at: https://harbingermotors.com/wp-json/wp/v2/menus
+  observed_message: Sorry, you are not allowed to view menus.
+- code: rest_block_type_cannot_view
+  status: 401
+  title: Not allowed to manage block types
+  detail: The block-type registry is capability-gated on this host.
+  remediation: Not a public route.
+  observed_at: https://harbingermotors.com/wp-json/wp/v2/block-types
+  observed_message: Sorry, you are not allowed to manage block types.
+- code: rest_no_route
+  status: 404
+  title: No route matched
+  detail: The path plus method combination is not registered.
+  remediation: Read the route index at https://harbingermotors.com/wp-json/ and use a registered pattern.
+  observed_at: https://harbingermotors.com/wp-json/wp/v2/nope
+  observed_message: No route was found matching the URL and request method.
+  source_operation: openapi/harbinger-discovery-api-openapi.yml#getApiIndex
+- code: rest_post_invalid_id
+  status: 404
+  title: Invalid post ID
+  detail: No post, page, event or media item exists with the supplied numeric id, or it is not publicly viewable.
+  remediation: List the collection first and use an id from it. Ids are not stable across a site migration.
+  observed_at: https://harbingermotors.com/wp-json/wp/v2/posts/99999999
+  observed_message: Invalid post ID.
+  source_operation: openapi/harbinger-posts-api-openapi.yml#getPost
+- code: rest_term_invalid
+  status: 404
+  title: Term does not exist
+  detail: No category or tag exists with the supplied term id.
+  remediation: List /wp/v2/categories first. Only three categories exist on this site.
+  observed_at: https://harbingermotors.com/wp-json/wp/v2/categories/99999999
+  observed_message: Term does not exist.
+  source_operation: openapi/harbinger-taxonomy-api-openapi.yml#getCategory
+- code: rest_type_invalid
+  status: 404
+  title: Invalid post type
+  detail: The requested post-type slug is not registered.
+  remediation: Call /wp/v2/types to enumerate the 12 registered types.
+  observed_at: https://harbingermotors.com/wp-json/wp/v2/types/nope
+  observed_message: Invalid post type.
+  source_operation: openapi/harbinger-discovery-api-openapi.yml#getType
+- code: rest_taxonomy_invalid
+  status: 404
+  title: Invalid taxonomy
+  detail: The requested taxonomy slug is not registered. Only `category` and `post_tag` exist here.
+  remediation: Call /wp/v2/taxonomies to enumerate them.
+  observed_at: https://harbingermotors.com/wp-json/wp/v2/taxonomies/nope
+  observed_message: Invalid taxonomy.
+  source_operation: openapi/harbinger-taxonomy-api-openapi.yml#getTaxonomy
+- code: oembed_invalid_url
+  status: 404
+  title: oEmbed URL not found
+  detail: The `url` supplied to the oEmbed endpoint is not a harbingermotors.com resource this provider can embed.
+  remediation: Pass a harbingermotors.com post, page or event permalink.
+  observed_at: 'https://harbingermotors.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fexample.com%2F'
+  observed_message: Not Found
+  source_operation: openapi/harbinger-oembed-api-openapi.yml#getOembed
+not_observed:
+  detail: >-
+    No 429 was produced by any request in this pass and no 5xx was observed. Absence of a 429 is
+    not evidence of an unlimited surface — see rate-limits/harbinger-rate-limits.yml.

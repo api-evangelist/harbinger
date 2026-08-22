@@ -1,18 +1,309 @@
 aid: harbinger
 name: Harbinger
-description: 'Harbinger is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: >-
+  Harbinger (Harbinger Motors Inc.) is an American commercial-vehicle manufacturer founded in July
+  2021 and headquartered in Garden Grove, California. It builds a purpose-designed medium-duty
+  platform — Class 4-6 stripped chassis in all-electric and plug-in hybrid range-extended
+  configurations, the HC Series low-cab-forward cab chassis, the Sevna cab chassis and a step van —
+  around in-house motors, battery packs, power electronics and vehicle software, and sells into
+  last-mile delivery, work-truck, mobile-healthcare, RV and motorhome, and government fleets. Its
+  Harbinger Industria line packages the same drivetrain as off-grid and jobsite power systems. The
+  company has announced serial production of an American-made medium-duty EV, a $160 million Series
+  C co-led by FedEx, Capricorn and THOR Industries, the acquisition of autonomous-driving company
+  Phantom AI alongside a ZF licensing agreement, and a robotics partnership with American
+  Rheinmetall. Harbinger is a vehicle manufacturer rather than a software vendor, and publishes no
+  developer program, no developer portal, no API documentation, no SDKs and no partner API. The
+  only machine-readable interface it exposes to the public is the WordPress REST content API behind
+  harbingermotors.com, which is captured here for discovery purposes and is anonymously readable
+  but read-only.
 url: https://raw.githubusercontent.com/api-evangelist/harbinger/refs/heads/main/apis.yml
+image: https://harbingermotors.com/wp-content/uploads/2025/02/cropped-Harbinger-Bird-02-192x192.png
+accessModel:
+  pricing: none
+  onboarding: none
+  trial: false
+  try_now: true
+  public: true
+  label: Public read-only content API, no signup
+  confidence: high
+  source:
+  - authentication
+  generated: '2026-08-22'
+  method: derived
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
-specificationVersion: '0.20'
+specificationVersion: '0.23'
 created: '2026-08-22'
 modified: '2026-08-22'
 tags:
 - Company
-apis: []
+- Automotive
+- Electric Vehicles
+- Commercial Vehicles
+- Medium Duty Trucks
+- Manufacturing
+- Fleet Management
+- Transportation
+- Logistics
+- Energy Storage
+- Content
+apis:
+- aid: harbinger:harbinger-posts-api
+  name: Harbinger Motors Posts API
+  description: >-
+    Public, unauthenticated read access to the Harbinger Motors newsroom — press releases, funding
+    and partnership announcements, product launches and fleet-operations articles — via the
+    WordPress core REST API. Verified live at 34 published posts on 2026-08-22.
+  humanURL: https://harbingermotors.com/newsroom/
+  baseURL: https://harbingermotors.com/wp-json
+  tags:
+  - Posts
+  - Newsroom
+  - Content
+  properties:
+  - type: OpenAPI
+    url: openapi/harbinger-posts-api-openapi.yml
+  - type: Authentication
+    url: authentication/harbinger-authentication.yml
+  - type: ErrorCatalog
+    url: errors/harbinger-problem-types.yml
+  - type: Conventions
+    url: conventions/harbinger-conventions.yml
+  - type: DataModel
+    url: data-model/harbinger-data-model.yml
+  - type: Conformance
+    url: conformance/harbinger-conformance.yml
+  - type: Lifecycle
+    url: lifecycle/harbinger-lifecycle.yml
+  - type: Overlay
+    url: overlays/harbinger-posts-api-overlay.yaml
+- aid: harbinger:harbinger-pages-api
+  name: Harbinger Motors Pages API
+  description: >-
+    Public, unauthenticated read access to the static pages of harbingermotors.com — the electric
+    and plug-in hybrid stripped chassis, HC Series cab chassis, Sevna cab, step van and Industria
+    product pages, plus Technology, Charging, Warranty, Incentives, TCO Calculator, Dealers,
+    Sourcewell, Careers and the legal set. Verified live at 35 published pages on 2026-08-22.
+  humanURL: https://harbingermotors.com/
+  baseURL: https://harbingermotors.com/wp-json
+  tags:
+  - Pages
+  - Products
+  - Content
+  properties:
+  - type: OpenAPI
+    url: openapi/harbinger-pages-api-openapi.yml
+  - type: Authentication
+    url: authentication/harbinger-authentication.yml
+  - type: ErrorCatalog
+    url: errors/harbinger-problem-types.yml
+  - type: Conventions
+    url: conventions/harbinger-conventions.yml
+  - type: DataModel
+    url: data-model/harbinger-data-model.yml
+  - type: Conformance
+    url: conformance/harbinger-conformance.yml
+  - type: Lifecycle
+    url: lifecycle/harbinger-lifecycle.yml
+  - type: Overlay
+    url: overlays/harbinger-pages-api-overlay.yaml
+- aid: harbinger:harbinger-events-api
+  name: Harbinger Motors Events API
+  description: >-
+    Public, unauthenticated read access to the Harbinger Motors event calendar — the site-specific
+    `event` custom post type behind harbingermotors.com/events/, listing the trade shows and
+    industry summits the company exhibits at (FedEx Forward Service Provider Summit, Government
+    Fleet Expo, Mid-Atlantic Advanced Transportation Summit and similar). Verified live at 7
+    published events on 2026-08-22. This is the only genuinely Harbinger-specific resource on the
+    surface.
+  humanURL: https://harbingermotors.com/events/
+  baseURL: https://harbingermotors.com/wp-json
+  tags:
+  - Events
+  - Trade Shows
+  - Content
+  properties:
+  - type: OpenAPI
+    url: openapi/harbinger-events-api-openapi.yml
+  - type: Authentication
+    url: authentication/harbinger-authentication.yml
+  - type: ErrorCatalog
+    url: errors/harbinger-problem-types.yml
+  - type: Conventions
+    url: conventions/harbinger-conventions.yml
+  - type: DataModel
+    url: data-model/harbinger-data-model.yml
+  - type: Conformance
+    url: conformance/harbinger-conformance.yml
+  - type: Lifecycle
+    url: lifecycle/harbinger-lifecycle.yml
+  - type: Overlay
+    url: overlays/harbinger-events-api-overlay.yaml
+- aid: harbinger:harbinger-media-api
+  name: Harbinger Motors Media API
+  description: >-
+    Public, unauthenticated read access to the Harbinger Motors media library — vehicle
+    photography, chassis renderings, spec sheets and brochure PDFs, logos and newsroom imagery,
+    each with its source URL and generated size variants. Verified live at 624 media items on
+    2026-08-22.
+  humanURL: https://harbingermotors.com/downloads/
+  baseURL: https://harbingermotors.com/wp-json
+  tags:
+  - Media
+  - Images
+  - Content
+  properties:
+  - type: OpenAPI
+    url: openapi/harbinger-media-api-openapi.yml
+  - type: Authentication
+    url: authentication/harbinger-authentication.yml
+  - type: ErrorCatalog
+    url: errors/harbinger-problem-types.yml
+  - type: Conventions
+    url: conventions/harbinger-conventions.yml
+  - type: DataModel
+    url: data-model/harbinger-data-model.yml
+  - type: Conformance
+    url: conformance/harbinger-conformance.yml
+  - type: Lifecycle
+    url: lifecycle/harbinger-lifecycle.yml
+  - type: Overlay
+    url: overlays/harbinger-media-api-overlay.yaml
+- aid: harbinger:harbinger-taxonomy-api
+  name: Harbinger Motors Taxonomy API
+  description: >-
+    Public, unauthenticated read access to the classification layer behind the harbingermotors.com
+    newsroom — the three live post categories (Press Release 25, News 7, Blogs 2), the post_tag
+    vocabulary (registered but empty at capture) and the taxonomy registry itself. Verified live on
+    2026-08-22.
+  humanURL: https://harbingermotors.com/newsroom/
+  baseURL: https://harbingermotors.com/wp-json
+  tags:
+  - Taxonomy
+  - Categories
+  - Content
+  properties:
+  - type: OpenAPI
+    url: openapi/harbinger-taxonomy-api-openapi.yml
+  - type: Authentication
+    url: authentication/harbinger-authentication.yml
+  - type: ErrorCatalog
+    url: errors/harbinger-problem-types.yml
+  - type: Conventions
+    url: conventions/harbinger-conventions.yml
+  - type: DataModel
+    url: data-model/harbinger-data-model.yml
+  - type: Conformance
+    url: conformance/harbinger-conformance.yml
+  - type: Lifecycle
+    url: lifecycle/harbinger-lifecycle.yml
+  - type: Overlay
+    url: overlays/harbinger-taxonomy-api-overlay.yaml
+- aid: harbinger:harbinger-search-api
+  name: Harbinger Motors Search API
+  description: >-
+    Public, unauthenticated keyword search across every searchable content type on
+    harbingermotors.com — posts, pages and events in one result set, each row reduced to id, title,
+    url, type and subtype. Verified live on 2026-08-22 (`search=chassis` returned 52 results).
+  humanURL: https://harbingermotors.com/
+  baseURL: https://harbingermotors.com/wp-json
+  tags:
+  - Search
+  - Content
+  properties:
+  - type: OpenAPI
+    url: openapi/harbinger-search-api-openapi.yml
+  - type: Authentication
+    url: authentication/harbinger-authentication.yml
+  - type: ErrorCatalog
+    url: errors/harbinger-problem-types.yml
+  - type: Conventions
+    url: conventions/harbinger-conventions.yml
+  - type: Conformance
+    url: conformance/harbinger-conformance.yml
+  - type: Lifecycle
+    url: lifecycle/harbinger-lifecycle.yml
+  - type: Overlay
+    url: overlays/harbinger-search-api-overlay.yaml
+- aid: harbinger:harbinger-discovery-api
+  name: Harbinger Motors Discovery API
+  description: >-
+    The self-describing layer of the harbingermotors.com WordPress REST API — the root index that
+    enumerates all 362 routes across 14 namespaces with their argument schemas, plus the post-type
+    and publication-status registries. This is the machine-readable contract every other API entry
+    in this profile was derived from. Verified live on 2026-08-22.
+  humanURL: https://harbingermotors.com/wp-json/
+  baseURL: https://harbingermotors.com/wp-json
+  tags:
+  - Discovery
+  - Metadata
+  - Content
+  properties:
+  - type: OpenAPI
+    url: openapi/harbinger-discovery-api-openapi.yml
+  - type: Authentication
+    url: authentication/harbinger-authentication.yml
+  - type: ErrorCatalog
+    url: errors/harbinger-problem-types.yml
+  - type: Conventions
+    url: conventions/harbinger-conventions.yml
+  - type: Conformance
+    url: conformance/harbinger-conformance.yml
+  - type: Lifecycle
+    url: lifecycle/harbinger-lifecycle.yml
+  - type: Overlay
+    url: overlays/harbinger-discovery-api-overlay.yaml
+- aid: harbinger:harbinger-oembed-api
+  name: Harbinger Motors oEmbed API
+  description: >-
+    The oEmbed 1.0 provider endpoint for harbingermotors.com. Given the URL of any Harbinger Motors
+    page, post or event it returns a rich-embed descriptor — provider name, author, title,
+    thumbnail and an iframe HTML fragment. Verified live and anonymous on 2026-08-22.
+  humanURL: https://harbingermotors.com/wp-json/oembed/1.0/embed
+  baseURL: https://harbingermotors.com/wp-json
+  tags:
+  - oEmbed
+  - Embeds
+  - Content
+  properties:
+  - type: OpenAPI
+    url: openapi/harbinger-oembed-api-openapi.yml
+  - type: Authentication
+    url: authentication/harbinger-authentication.yml
+  - type: ErrorCatalog
+    url: errors/harbinger-problem-types.yml
+  - type: Conventions
+    url: conventions/harbinger-conventions.yml
+  - type: Conformance
+    url: conformance/harbinger-conformance.yml
+  - type: Overlay
+    url: overlays/harbinger-oembed-api-overlay.yaml
+- aid: harbinger:harbinger-seo-api
+  name: Harbinger Motors SEO Metadata API
+  description: >-
+    The Yoast SEO `get_head` endpoint on harbingermotors.com. For any site URL it returns the fully
+    rendered head block — canonical URL, robots directives, Open Graph and Twitter card metadata,
+    and the schema.org JSON-LD graph the page publishes. Verified live on 2026-08-22 against Yoast
+    SEO 28.3. This is a plugin surface, not a Harbinger product API.
+  humanURL: https://harbingermotors.com/
+  baseURL: https://harbingermotors.com/wp-json
+  tags:
+  - SEO
+  - Metadata
+  - Content
+  properties:
+  - type: OpenAPI
+    url: openapi/harbinger-seo-api-openapi.yml
+  - type: Authentication
+    url: authentication/harbinger-authentication.yml
+  - type: ErrorCatalog
+    url: errors/harbinger-problem-types.yml
+  - type: Conventions
+    url: conventions/harbinger-conventions.yml
+  - type: Conformance
+    url: conformance/harbinger-conformance.yml
+  - type: Overlay
+    url: overlays/harbinger-seo-api-overlay.yaml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -20,4 +311,69 @@ maintainers:
   email: info@apis.io
 common:
 - type: Website
-  url: https://forgeglobal.com/harbinger_stock/
+  url: https://harbingermotors.com/
+- type: About
+  url: https://harbingermotors.com/our-company/
+- type: Blog
+  url: https://harbingermotors.com/newsroom/
+- type: BlogRSS
+  url: https://harbingermotors.com/feed/
+- type: Products
+  url: https://harbingermotors.com/our-products/
+- type: Technology
+  url: https://harbingermotors.com/technology/
+- type: Downloads
+  url: https://harbingermotors.com/downloads/
+- type: Support
+  url: https://harbingermotors.com/contact/
+- type: Careers
+  url: https://harbingermotors.com/careers/
+- type: Partners
+  url: https://harbingermotors.com/dealers/
+- type: TermsOfService
+  url: https://harbingermotors.com/legal/terms-of-use/
+- type: PrivacyPolicy
+  url: https://harbingermotors.com/legal/privacy/
+- type: LinkedIn
+  url: https://www.linkedin.com/company/harbingermotors
+- type: Twitter
+  url: https://x.com/harbingermotors
+- type: YouTube
+  url: https://www.youtube.com/@harbingermotors
+- type: Instagram
+  url: https://www.instagram.com/harbingermotorsinc/
+- type: Authentication
+  url: authentication/harbinger-authentication.yml
+- type: ErrorCatalog
+  url: errors/harbinger-problem-types.yml
+- type: Conventions
+  url: conventions/harbinger-conventions.yml
+- type: DataModel
+  url: data-model/harbinger-data-model.yml
+- type: Conformance
+  url: conformance/harbinger-conformance.yml
+- type: Lifecycle
+  url: lifecycle/harbinger-lifecycle.yml
+- type: RateLimits
+  url: rate-limits/harbinger-rate-limits.yml
+- type: Plans
+  url: plans/harbinger-plans-pricing.yml
+- type: Packages
+  url: packages/harbinger-packages.yml
+- type: LLMsTxt
+  url: llms/harbinger-llms.txt
+- type: ToolCrosswalk
+  url: mcp/harbinger-tool-crosswalk.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: Examples
+  url: examples/harbinger-examples.yml
+- type: AgenticAccess
+  url: agentic-access/harbinger-agentic-access.yml
+- type: DomainSecurity
+  url: security/harbinger-domain-security.yml
+x-enrichment:
+  date: '2026-08-22'
+  status: enriched
+  artifacts_added: 37
+  pass: local-v1

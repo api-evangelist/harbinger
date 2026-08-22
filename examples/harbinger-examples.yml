@@ -1,0 +1,118 @@
+generated: '2026-08-22'
+method: probed
+source: live requests against https://harbingermotors.com/wp-json/ on 2026-08-22
+description: >-
+  Working request/response examples captured live. Every value below was returned by the API — no
+  example is synthesized. All requests are anonymous; no credential is needed. Responses are
+  trimmed with the `_fields` parameter where the full record is large.
+base_url: https://harbingermotors.com/wp-json
+examples:
+- name: List the Harbinger Motors event calendar
+  operation: listEvents
+  spec: openapi/harbinger-events-api-openapi.yml
+  request: 'GET /wp/v2/event?per_page=10&_fields=id,slug,title,link,date'
+  http_status: 200
+  response_headers: {X-WP-Total: '7', X-WP-TotalPages: '1'}
+  response_excerpt:
+  - {id: 2188, slug: fedex-forward-service-provider-summit, title: FedEx Forward Service Provider Summit, date: '2026-07-14'}
+  - {id: 2012, slug: government-fleet-expo, title: Government Fleet Expo, date: '2026-05-19'}
+  - {id: 2010, slug: mid-atlantic-advanced-transportation-summit, title: Mid-Atlantic Advanced Transportation Summit, date: '2026-05-19'}
+  - {id: 1937, slug: master-the-strategy-of-californias-hvip, title: "Master the Strategy of California’s HVIP", date: '2026-04-14'}
+  - {id: 1624, slug: act-expo-2026, title: ACT Expo 2026, date: '2026-01-15'}
+  - {id: 1622, slug: work-truck-week-2026, title: Work Truck Week 2026, date: '2026-01-15'}
+  note: >-
+    `title` is really an object, {"rendered": "..."}, on every post-type resource; flattened here
+    for readability, and the rendered string carries HTML entities (&#038; for &). `date` is the
+    WordPress publication timestamp, NOT the date the event takes place — the event date is only
+    inside the rendered content, because `acf` returns an empty array over REST.
+- name: Walk the product page hierarchy
+  operation: listPages
+  spec: openapi/harbinger-pages-api-openapi.yml
+  request: 'GET /wp/v2/pages?per_page=12&orderby=title&order=asc&_fields=id,slug,title,link,parent'
+  http_status: 200
+  response_headers: {X-WP-Total: '35', X-WP-TotalPages: '3'}
+  response_excerpt:
+  - {id: 313, slug: home, title: 1.0 Home, parent: 0}
+  - {id: 83, slug: technology, title: 2.0 Technology, parent: 0}
+  - {id: 97, slug: our-company, title: 3.0 Our Company, parent: 0}
+  - {id: 660, slug: our-products, title: 3.0 Our Products, parent: 0}
+  - {id: 503, slug: plugin-hybrid-chassis, title: 3.1 Plug-in Hybrid, parent: 660}
+  - {id: 695, slug: electric-chassis, title: 3.2 Electric Chassis, parent: 660}
+  - {id: 1093, slug: step-van, title: 3.3 Step Van, parent: 660}
+  - {id: 1241, slug: cab-chassis, title: 3.4 Cab Chassis, parent: 660}
+  - {id: 1694, slug: hc-series-cab, title: 3.5 HC Series Cab, parent: 660}
+  - {id: 1714, slug: industria, title: 'Industria: Auxiliary Power System', parent: 660}
+  note: >-
+    `parent: 660` is the whole product line hanging off /our-products/. The numeric prefixes in the
+    titles are the site's own editorial ordering scheme, returned verbatim.
+- name: Find the published spec sheets and brochures
+  operation: listMedia
+  spec: openapi/harbinger-media-api-openapi.yml
+  request: 'GET /wp/v2/media?per_page=6&mime_type=application/pdf&_fields=id,slug,title,source_url,mime_type'
+  http_status: 200
+  response_excerpt:
+  - {id: 1993, title: Harbinger_StepVanDocument_UPDATE, source_url: 'https://harbingermotors.com/wp-content/uploads/2026/04/Harbinger_StepVanDocument_UPDATE.pdf'}
+  - {id: 1992, title: Harbinger_Product Lineup_FA, source_url: 'https://harbingermotors.com/wp-content/uploads/2026/04/Harbinger_Product-Lineup_FA.pdf'}
+  - {id: 1991, title: Telematics_1_Pager_FA, source_url: 'https://harbingermotors.com/wp-content/uploads/2026/04/Telematics_1_Pager_FA.pdf'}
+  - {id: 1990, title: Offshore Power One Pager, source_url: 'https://harbingermotors.com/wp-content/uploads/2026/04/Offshore-Power-One-Pager.pdf'}
+  - {id: 1989, title: HC Series Cab One Pager, source_url: 'https://harbingermotors.com/wp-content/uploads/2026/04/HC-Series-Cab-One-Pager.pdf'}
+  - {id: 1988, title: Harbinger Power System One Pager, source_url: 'https://harbingermotors.com/wp-content/uploads/2026/04/Harbinger-Power-System-One-Pager.pdf'}
+  note: >-
+    This is where the vehicle specifications actually live, and they live as PDFs. `Telematics_1_Pager_FA.pdf`
+    is the entire public description of Harbinger's telematics offering — there is no data interface
+    behind it.
+- name: Search across posts, pages and events at once
+  operation: search
+  spec: openapi/harbinger-search-api-openapi.yml
+  request: 'GET /wp/v2/search?search=chassis&per_page=5'
+  http_status: 200
+  response_headers: {X-WP-Total: '52', X-WP-TotalPages: '11'}
+  response_excerpt:
+  - {id: 1241, title: 3.4 Cab Chassis, url: 'https://harbingermotors.com/our-products/cab-chassis/', type: post, subtype: page}
+  - {id: 695, title: 3.2 Electric Chassis, url: 'https://harbingermotors.com/our-products/electric-chassis/', type: post, subtype: page}
+  - {id: 347, title: Harbinger Motors Delivers First Electric Chassis to THOR Industries, url: 'https://harbingermotors.com/newsroom/harbinger-motors-delivers-first-electric-chassis-to-thor-industries/', type: post, subtype: post}
+  - {id: 2206, title: American Rheinmetall awarded U.S. Army contract for Project Sustainment to advance autonomous logistics capabilities, progressing new partnership with Harbinger, type: post, subtype: post}
+  - {id: 2130, title: Harbinger Announces Unmanned Hybrid-Electric Vehicle Platform for Military Applications, type: post, subtype: post}
+  note: >-
+    Branch on `subtype`, not `type` — `type` is always "post" here. Each result carries
+    `_links.self.href` pointing at the correctly typed collection (/wp/v2/pages/1241 vs
+    /wp/v2/posts/347), with a `targetHints.allow: [GET]` confirming read-only.
+- name: Get an embed descriptor for a product page
+  operation: getOembed
+  spec: openapi/harbinger-oembed-api-openapi.yml
+  request: 'GET /oembed/1.0/embed?url=https%3A%2F%2Fharbingermotors.com%2Four-products%2Fstep-van%2F'
+  http_status: 200
+  response_excerpt:
+    version: '1.0'
+    provider_name: Harbinger Motors
+    provider_url: https://harbingermotors.com
+    title: Step Van - Harbinger Motors
+    type: rich
+    width: 600
+    height: 338
+    description: "Harbinger’s purpose-built Electric Step Van delivers unmatched payload, maneuverability, and total cost of ownership in the medium-duty class. Built in America with up to 500 miles of range, industry-leading warranties, and a versatile chassis ready for any upfit, it’s engineered for maximum uptime and long-term fleet value."
+  note: '`html` (omitted here) is the full iframe + wp-embed script blob. `description` is the cleanest one-line product summary the surface exposes.'
+- name: List the newsroom categories
+  operation: listCategories
+  spec: openapi/harbinger-taxonomy-api-openapi.yml
+  request: 'GET /wp/v2/categories?per_page=10&_fields=id,name,slug,count'
+  http_status: 200
+  response:
+  - {id: 18, name: Blogs, slug: blogs, count: 2}
+  - {id: 2, name: News, slug: news, count: 7}
+  - {id: 1, name: Press Release, slug: press-release, count: 1}
+  note: >-
+    `count` from the API is a per-page artefact of this trimmed call; the true counts read from the
+    full records are Press Release 25, News 7, Blogs 2 — 34 posts in total.
+- name: Read an error deliberately
+  operation: listPosts
+  spec: openapi/harbinger-posts-api-openapi.yml
+  request: 'GET /wp/v2/posts?per_page=999'
+  http_status: 400
+  response:
+    code: rest_invalid_param
+    message: 'Invalid parameter(s): per_page'
+    data:
+      status: 400
+      params: {per_page: per_page must be between 1 (inclusive) and 100 (inclusive)}
+  note: The full catalog of 14 live error codes is in errors/harbinger-problem-types.yml.

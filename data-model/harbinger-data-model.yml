@@ -1,0 +1,112 @@
+generated: '2026-08-22'
+method: derived
+source: openapi/ (9 specs, 22 operations) derived from the published OPTIONS schema documents at https://harbingermotors.com/wp-json/
+description: >-
+  The entity-relationship graph of the harbingermotors.com WordPress REST content API. Every entity
+  and every relationship below is read from the server's own published schemas — the id-reference
+  fields WordPress declares (author, featured_media, parent, categories, tags) and the _links /
+  _embedded relation set present on each record.
+id_scheme:
+  style: opaque positive integer, assigned per post type by WordPress
+  prefixes: none
+  stability: >-
+    Ids are database primary keys. They are stable while the site is, but are not durable across a
+    migration or rebuild. `slug` is the more durable natural key for posts, pages and events, and
+    `link` is the canonical public URL.
+entities:
+- name: Post
+  rest_base: /wp/v2/posts
+  schema: openapi/harbinger-posts-api-openapi.yml#/components/schemas/Post
+  count_observed: 34
+  key_fields: [id, slug, link, date, modified, title, content, excerpt, author, featured_media, categories, tags, status, type]
+  note: Press releases, news items and fleet-operations blog articles.
+- name: Page
+  rest_base: /wp/v2/pages
+  schema: openapi/harbinger-pages-api-openapi.yml#/components/schemas/Page
+  count_observed: 35
+  key_fields: [id, slug, link, date, modified, title, content, excerpt, author, featured_media, parent, menu_order, template, status, type]
+  note: Product, technology, legal and commercial pages. Hierarchical — `parent` is a self-reference.
+- name: Event
+  rest_base: /wp/v2/event
+  schema: openapi/harbinger-events-api-openapi.yml#/components/schemas/Event
+  count_observed: 7
+  key_fields: [id, slug, link, date, modified, title, content, featured_media, status, type, acf]
+  note: >-
+    The only site-specific post type Harbinger registered. Carries an `acf` field (Advanced Custom
+    Fields) which was an empty array on every event read on 2026-08-22 — the custom field group is
+    registered but exposes nothing over REST, so event date, venue and location live only in the
+    rendered content, not as structured data.
+- name: MediaItem
+  rest_base: /wp/v2/media
+  schema: openapi/harbinger-media-api-openapi.yml#/components/schemas/MediaItem
+  count_observed: 624
+  key_fields: [id, slug, link, date, title, author, post, source_url, mime_type, media_type, media_details, alt_text, caption]
+  note: Vehicle photography, chassis renderings, brochure and spec-sheet PDFs, logos. `media_details.sizes` carries every generated variant with its own source_url.
+- name: Category
+  rest_base: /wp/v2/categories
+  schema: openapi/harbinger-taxonomy-api-openapi.yml#/components/schemas/Category
+  count_observed: 3
+  key_fields: [id, name, slug, count, parent, link, taxonomy]
+  terms_observed:
+  - {id: 1, slug: press-release, name: Press Release, count: 25}
+  - {id: 2, slug: news, name: News, count: 7}
+  - {id: 18, slug: blogs, name: Blogs, count: 2}
+- name: Tag
+  rest_base: /wp/v2/tags
+  schema: openapi/harbinger-taxonomy-api-openapi.yml#/components/schemas/Tag
+  count_observed: 0
+  key_fields: [id, name, slug, count, link, taxonomy]
+  note: The post_tag taxonomy is registered but carries zero terms. Filtering posts by tag will always return an empty set.
+- name: SearchResult
+  rest_base: /wp/v2/search
+  schema: openapi/harbinger-search-api-openapi.yml#/components/schemas/SearchResult
+  key_fields: [id, title, url, type, subtype]
+  note: A projection, not a stored entity. `id` + `subtype` together resolve back to a Post, Page or Event.
+- name: PostType
+  rest_base: /wp/v2/types
+  schema: openapi/harbinger-discovery-api-openapi.yml#/components/schemas/PostType
+  count_observed: 12
+  note: Registry entity. Describes the shape of the content entities above.
+- name: PostStatus
+  rest_base: /wp/v2/statuses
+  schema: openapi/harbinger-discovery-api-openapi.yml#/components/schemas/PostStatus
+  note: Registry entity. Only `publish` is publicly queryable anonymously.
+- name: Taxonomy
+  rest_base: /wp/v2/taxonomies
+  schema: openapi/harbinger-taxonomy-api-openapi.yml#/components/schemas/Taxonomy
+  count_observed: 2
+  note: 'Registry entity: category and post_tag.'
+relationships:
+- {from: Post, to: Category, cardinality: has_many, via: categories, detail: 'Array of category term ids. Reverse filter: GET /wp/v2/posts?categories={id}'}
+- {from: Post, to: Tag, cardinality: has_many, via: tags, detail: 'Array of post_tag term ids. Always empty on this site.'}
+- {from: Post, to: MediaItem, cardinality: has_one, via: featured_media, detail: 'Numeric media id, 0 when unset. Resolve with GET /wp/v2/media/{id} or _embed.'}
+- {from: Post, to: User, cardinality: belongs_to, via: author, detail: 'Numeric user id. NOT resolvable anonymously — /wp/v2/users returns 401. Use _embed to obtain the embedded author record.'}
+- {from: Page, to: Page, cardinality: belongs_to, via: parent, detail: 'Self-referential hierarchy, 0 at the root. Drives the /legal/ and /our-products/ URL nesting.'}
+- {from: Page, to: MediaItem, cardinality: has_one, via: featured_media}
+- {from: Page, to: User, cardinality: belongs_to, via: author}
+- {from: Event, to: MediaItem, cardinality: has_one, via: featured_media}
+- {from: Event, to: User, cardinality: belongs_to, via: author}
+- {from: MediaItem, to: Post, cardinality: belongs_to, via: post, detail: 'The post, page or event the attachment was uploaded to; 0 for library-only assets.'}
+- {from: Category, to: Category, cardinality: belongs_to, via: parent, detail: 'Hierarchical taxonomy. All three live terms are at the root.'}
+- {from: Category, to: Taxonomy, cardinality: belongs_to, via: taxonomy}
+- {from: Tag, to: Taxonomy, cardinality: belongs_to, via: taxonomy}
+- {from: Post, to: PostType, cardinality: belongs_to, via: type}
+- {from: Post, to: PostStatus, cardinality: belongs_to, via: status}
+link_relations:
+  detail: >-
+    Every record carries a `_links` object of HAL-style relations, and `_embed=1` inlines the
+    resolvable ones under `_embedded`. This is the intended traversal mechanism and it is the only
+    way to read an author on this host.
+  relations: [self, collection, about, author, replies, 'wp:featuredmedia', 'wp:attachment', 'wp:term', curies]
+gaps:
+  - >-
+    No structured event data. The `event` post type exposes `acf: []` — the trade-show date, venue
+    and city that a fleet buyer would want are inside rendered HTML, not fields. This is the single
+    biggest machine-readability gap on the surface and it is one line of PHP for Harbinger to fix
+    (`show_in_rest` on the field group).
+  - >-
+    No structured product data. The chassis, cab and step-van specifications live in page content
+    and in PDF spec sheets under /wp/v2/media, not as a product entity. There is no Vehicle,
+    Chassis or SpecSheet type registered.
+  - >-
+    Authors are unresolvable anonymously, so a post's byline can only be reached through _embed.
