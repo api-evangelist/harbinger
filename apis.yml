@@ -17,6 +17,18 @@ description: >-
   harbingermotors.com, which is captured here for discovery purposes and is anonymously readable
   but read-only.
 url: https://raw.githubusercontent.com/api-evangelist/harbinger/refs/heads/main/apis.yml
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://harbingermotors.com/wp-content/uploads/2025/02/cropped-Harbinger-Bird-02-192x192.png
 accessModel:
   pricing: none
