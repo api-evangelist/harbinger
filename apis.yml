@@ -100,6 +100,10 @@ apis:
   baseURL: https://harbingermotors.com/wp-json
   tags:
   - Pages
+  - Product
+  - Content
+  tags_raw:
+  - Pages
   - Products
   - Content
   properties:
@@ -131,6 +135,10 @@ apis:
   humanURL: https://harbingermotors.com/events/
   baseURL: https://harbingermotors.com/wp-json
   tags:
+  - Event
+  - Trade Shows
+  - Content
+  tags_raw:
   - Events
   - Trade Shows
   - Content
@@ -161,6 +169,10 @@ apis:
   humanURL: https://harbingermotors.com/downloads/
   baseURL: https://harbingermotors.com/wp-json
   tags:
+  - Media
+  - Image
+  - Content
+  tags_raw:
   - Media
   - Images
   - Content
