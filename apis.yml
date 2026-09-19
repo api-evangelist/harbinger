@@ -306,6 +306,8 @@ apis:
   humanURL: https://harbingermotors.com/newsroom/
   baseURL: https://harbingermotors.com/wp-json
   tags:
+  - oEmbed
+  tags_raw:
   - o Embed
   properties:
   - type: OpenAPI
