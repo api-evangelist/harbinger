@@ -1,20 +1,14 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Harbinger Motors Discovery API
   version: wp/v2
-  description: 'The self-describing layer of the harbingermotors.com WordPress REST API: the root index that enumerates
-    all 362 routes across 14 namespaces with their argument schemas, plus the post-type and status registries. This
-    is the machine-readable contract the rest of this profile was derived from. Verified live on 2026-08-22; anonymous
-    and read-only.'
+  description: 'The self-describing layer of the harbingermotors.com WordPress REST API: the root index that enumerates all 362 routes across 14 namespaces with their argument schemas, plus the post-type and status registries. This is the machine-readable contract the rest of this profile was derived from. Verified live on 2026-08-22; anonymous and read-only.'
   contact:
     name: Harbinger Motors
     url: https://harbingermotors.com/contact/
   x-derived-from: https://harbingermotors.com/wp-json/ route index + per-route HTTP OPTIONS schema documents
   x-derived-on: '2026-08-22'
-  x-api-evangelist-note: Third-party profile. Harbinger Motors publishes no developer program, no API documentation
-    and no developer portal; this documents the anonymously readable WordPress REST content API behind harbingermotors.com.
-    Every path, parameter and schema here was read from the server's own published route index and HTTP OPTIONS
-    schema documents on 2026-08-22 — nothing is invented.
+  x-api-evangelist-note: Third-party profile. Harbinger Motors publishes no developer program, no API documentation and no developer portal; this documents the anonymously readable WordPress REST content API behind harbingermotors.com. Every path, parameter and schema here was read from the server's own published route index and HTTP OPTIONS schema documents on 2026-08-22 — nothing is invented.
 servers:
 - url: https://harbingermotors.com/wp-json
   description: Harbinger Motors WordPress REST API
@@ -26,9 +20,7 @@ paths:
     get:
       operationId: getApiIndex
       summary: Get the API index
-      description: 'The WordPress REST API discovery document for harbingermotors.com: site name and description,
-        the registered namespaces, every route with its methods and argument schemas, and the authentication schemes
-        on offer. 362 routes across 14 namespaces at capture.'
+      description: 'The WordPress REST API discovery document for harbingermotors.com: site name and description, the registered namespaces, every route with its methods and argument schemas, and the authentication schemes on offer. 362 routes across 14 namespaces at capture.'
       tags:
       - Discovery
       parameters:
@@ -38,8 +30,7 @@ paths:
           default: view
       - name: _fields
         in: query
-        description: Comma-separated allowlist of top-level response fields (sparse fieldset). WordPress core parameter,
-          present on every route.
+        description: Comma-separated allowlist of top-level response fields (sparse fieldset). WordPress core parameter, present on every route.
         schema:
           type: string
       - name: _embed
@@ -64,8 +55,7 @@ paths:
       parameters:
       - name: _fields
         in: query
-        description: Comma-separated allowlist of top-level response fields (sparse fieldset). WordPress core parameter,
-          present on every route.
+        description: Comma-separated allowlist of top-level response fields (sparse fieldset). WordPress core parameter, present on every route.
         schema:
           type: string
       - name: _embed
@@ -84,8 +74,7 @@ paths:
     get:
       operationId: listTypes
       summary: List post types
-      description: Retrieve every registered post type and its REST base. 12 types at capture, of which `event`
-        is the only site-specific one Harbinger registered.
+      description: Retrieve every registered post type and its REST base. 12 types at capture, of which `event` is the only site-specific one Harbinger registered.
       tags:
       - Discovery
       parameters:
@@ -101,8 +90,7 @@ paths:
           default: view
       - name: _fields
         in: query
-        description: Comma-separated allowlist of top-level response fields (sparse fieldset). WordPress core parameter,
-          present on every route.
+        description: Comma-separated allowlist of top-level response fields (sparse fieldset). WordPress core parameter, present on every route.
         schema:
           type: string
       - name: _embed
@@ -120,15 +108,13 @@ paths:
                 additionalProperties:
                   $ref: '#/components/schemas/PostType'
         '400':
-          description: Invalid parameter. WordPress returns `rest_invalid_param` with a per-parameter `data.params`
-            map.
+          description: Invalid parameter. WordPress returns `rest_invalid_param` with a per-parameter `data.params` map.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
         '401':
-          description: Anonymous request to a capability-gated route or context. Envelope carries a `rest_*_cannot_*`
-            / `rest_forbidden` code.
+          description: Anonymous request to a capability-gated route or context. Envelope carries a `rest_*_cannot_*` / `rest_forbidden` code.
           content:
             application/json:
               schema:
@@ -149,8 +135,7 @@ paths:
           type: string
       - name: _fields
         in: query
-        description: Comma-separated allowlist of top-level response fields (sparse fieldset). WordPress core parameter,
-          present on every route.
+        description: Comma-separated allowlist of top-level response fields (sparse fieldset). WordPress core parameter, present on every route.
         schema:
           type: string
       - name: _embed
@@ -166,8 +151,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/PostType'
         '401':
-          description: Anonymous request to a capability-gated route or context. Envelope carries a `rest_*_cannot_*`
-            / `rest_forbidden` code.
+          description: Anonymous request to a capability-gated route or context. Envelope carries a `rest_*_cannot_*` / `rest_forbidden` code.
           content:
             application/json:
               schema:
@@ -198,8 +182,7 @@ paths:
           default: view
       - name: _fields
         in: query
-        description: Comma-separated allowlist of top-level response fields (sparse fieldset). WordPress core parameter,
-          present on every route.
+        description: Comma-separated allowlist of top-level response fields (sparse fieldset). WordPress core parameter, present on every route.
         schema:
           type: string
       - name: _embed
@@ -217,21 +200,71 @@ paths:
                 additionalProperties:
                   $ref: '#/components/schemas/PostStatus'
         '400':
-          description: Invalid parameter. WordPress returns `rest_invalid_param` with a per-parameter `data.params`
-            map.
+          description: Invalid parameter. WordPress returns `rest_invalid_param` with a per-parameter `data.params` map.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
         '401':
-          description: Anonymous request to a capability-gated route or context. Envelope carries a `rest_*_cannot_*`
-            / `rest_forbidden` code.
+          description: Anonymous request to a capability-gated route or context. Envelope carries a `rest_*_cannot_*` / `rest_forbidden` code.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
+    PostStatus:
+      type: object
+      properties:
+        name:
+          description: The title for the status.
+          type: string
+        private:
+          description: Whether posts with this status should be private.
+          type: boolean
+        protected:
+          description: Whether posts with this status should be protected.
+          type: boolean
+        public:
+          description: Whether posts of this status should be shown in the front end of the site.
+          type: boolean
+        queryable:
+          description: Whether posts with this status should be publicly-queryable.
+          type: boolean
+        show_in_list:
+          description: Whether to include posts in the edit listing for their post type.
+          type: boolean
+        slug:
+          description: An alphanumeric identifier for the status.
+          type: string
+        date_floating:
+          description: Whether posts of this status may have floating published dates.
+          type: boolean
+    Error:
+      type: object
+      description: WordPress REST error envelope. Observed live on this host; it is not RFC 9457 problem+json.
+      properties:
+        code:
+          type: string
+          description: Stable machine-readable error code. Match on this, never on `message`.
+        message:
+          type: string
+          description: Human-readable message. Localized and subject to change.
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+              description: HTTP status code, repeated in the body.
+            params:
+              type: object
+              description: Per-parameter validation messages, present on rest_invalid_param.
+            details:
+              type: object
+              description: Per-parameter structured detail, present on rest_invalid_param.
+      required:
+      - code
+      - message
     ApiIndex:
       type: object
       description: WordPress REST API index document.
@@ -293,8 +326,7 @@ components:
           description: All features, supported by the post type.
           type: object
         has_archive:
-          description: If the value is a string, the value will be used as the archive slug. If the value is false
-            the post type has no archive.
+          description: If the value is a string, the value will be used as the archive slug. If the value is false the post type has no archive.
           type:
           - string
           - boolean
@@ -337,55 +369,3 @@ components:
           - contentOnly
           - false
           description: The template_lock associated with the post type, or false if none.
-    PostStatus:
-      type: object
-      properties:
-        name:
-          description: The title for the status.
-          type: string
-        private:
-          description: Whether posts with this status should be private.
-          type: boolean
-        protected:
-          description: Whether posts with this status should be protected.
-          type: boolean
-        public:
-          description: Whether posts of this status should be shown in the front end of the site.
-          type: boolean
-        queryable:
-          description: Whether posts with this status should be publicly-queryable.
-          type: boolean
-        show_in_list:
-          description: Whether to include posts in the edit listing for their post type.
-          type: boolean
-        slug:
-          description: An alphanumeric identifier for the status.
-          type: string
-        date_floating:
-          description: Whether posts of this status may have floating published dates.
-          type: boolean
-    Error:
-      type: object
-      description: WordPress REST error envelope. Observed live on this host; it is not RFC 9457 problem+json.
-      properties:
-        code:
-          type: string
-          description: Stable machine-readable error code. Match on this, never on `message`.
-        message:
-          type: string
-          description: Human-readable message. Localized and subject to change.
-        data:
-          type: object
-          properties:
-            status:
-              type: integer
-              description: HTTP status code, repeated in the body.
-            params:
-              type: object
-              description: Per-parameter validation messages, present on rest_invalid_param.
-            details:
-              type: object
-              description: Per-parameter structured detail, present on rest_invalid_param.
-      required:
-      - code
-      - message
