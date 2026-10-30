@@ -64,19 +64,112 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Harbinger (Harbinger Motors Inc.) is an American commercial-vehicle manufacturer founded in July 2021
-and headquartered in Garden Grove, California. It builds a purpose-designed medium-duty platform —
-Class 4-6 stripped chassis in all-electric and plug-in hybrid range-extended form, the HC Series
-low-cab-forward cab chassis, the Sevna cab chassis and a step van — plus the Harbinger Industria
-off-grid and jobsite power system.
+Harbinger (Harbinger Motors Inc.) is an American commercial-vehicle manufacturer founded in July 2021 and headquartered in Garden Grove, California. It builds a purpose-designed medium-duty platform — Class 4-6 stripped chassis in all-electric and plug-in hybrid range-extended configurations, the HC Series low-cab-forward cab chassis, the Sevna cab chassis and a step van — around in-house motors, battery packs, power electronics and vehicle software, and sells into last-mile delivery, work-truck, mobile-healthcare, RV and motorhome, and government fleets. Its Harbinger Industria line packages the same drivetrain as off-grid and jobsite power systems. The company has announced serial production of an American-made medium-duty EV, a $160 million Series C co-led by FedEx, Capricorn and THOR Industries, the acquisition of autonomous-driving company Phantom AI alongside a ZF licensing agreement, and a robotics partnership with American Rheinmetall. Harbinger is a vehicle manufacturer rather than a software vendor, and publishes no developer program, no developer portal, no API documentation, no SDKs and no partner API. The only machine-readable interface it exposes to the public is the WordPress REST content API behind harbingermotors.com, which is captured here for discovery purposes and is anonymously readable but read-only.
 
-**Harbinger Motors publishes no API, no developer portal, no API documentation and no SDKs.** It is a
-vehicle manufacturer, not a software vendor. The one machine-readable interface it exposes publicly is
-the WordPress REST content API behind `harbingermotors.com`, which is anonymously readable, read-only,
-and documented in this repository for discovery purposes. Nine OpenAPI definitions in `openapi/` were
-derived from the site's own published route index and HTTP OPTIONS schema documents on 2026-08-22 —
-Harbinger publishes none of them.
+**Areas:** Company · Automotive · Electric Vehicles · Commercial Vehicles · Medium Duty Trucks · Manufacturing · Fleet Management · Transportation · Logistics · Energy Storage
 
-- https://harbingermotors.com/
-- https://harbingermotors.com/wp-json/
-- https://forgeglobal.com/harbinger_stock/
+## Harbinger on APIs.io
+
+Everything profiled for Harbinger is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/harbinger/](https://apis.io/providers/harbinger/)** — or go straight to one of the APIs or properties below.
+
+### APIs (1)
+
+- [Harbinger Website (WordPress REST)](https://apis.io/apis/harbinger/harbingermotors-com-website-wordpress-rest/) — The public WordPress REST API (wp-json) of the Harbinger website at harbingermotors.com: the route index of the site's content management system, catalogued…
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [harbinger](https://apis.io/servers/harbinger/harbinger/)
+
+#### Agentic access (1)
+
+Which operations an agent can call, which act, and which need a human in the loop.
+
+- [Harbinger Agentic Access](https://apis.io/agentic-access/harbinger/harbinger-agentic-access/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Harbinger Authentication](https://apis.io/security/harbinger/harbinger-authentication/)
+- [Harbinger Domain Security](https://apis.io/security/harbinger/harbinger-domain-security/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Harbinger Plans Pricing](https://apis.io/plans/harbinger/harbinger-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Harbinger Rate Limits](https://apis.io/rate-limits/harbinger/harbinger-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://harbingermotors.com/)
+- [Support](https://harbingermotors.com/contact/)
+- [Blog](https://harbingermotors.com/newsroom/)
+- [Terms of service](https://harbingermotors.com/legal/terms-of-use/)
+- [Privacy policy](https://harbingermotors.com/legal/privacy/)
+
+## API Evangelist rating
+
+**Kin Score 20.0** — emerging · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 64.3 |
+| Contract quality | 6.5 |
+| Contract governance | 4.5 |
+| Operational transparency | 0.0 |
+| Developer ergonomics | 30.4 |
+| Access clarity | 21.1 |
+
+**Agent readiness 11.9** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | — |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | documented (partial credit) |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 20.5** — Energy & Utilities
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/harbinger/](https://apis.io/providers/harbinger/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Harbinger: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/harbinger/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
